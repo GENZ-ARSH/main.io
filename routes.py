@@ -371,21 +371,8 @@ def verify_access():
     if section not in session['secure_access']:
         session['secure_access'].append(section)
     
-    # Determine redirect URL based on section
-    redirect_url = url_for('index')
-    if section == 'admin':
-        redirect_url = url_for('secure_admin_login')
-    # Other sections to be implemented later
-    elif section == 'battle':
-        redirect_url = url_for('battle_arena') if 'battle_arena' in globals() else url_for('coming_soon', feature='battle')
-    elif section == 'internship':
-        redirect_url = url_for('internship_portal') if 'internship_portal' in globals() else url_for('coming_soon', feature='internship')
-    elif section == 'ai':
-        redirect_url = url_for('ai_center') if 'ai_center' in globals() else url_for('coming_soon', feature='ai')
-    elif section == 'marketplace':
-        redirect_url = url_for('marketplace') if 'marketplace' in globals() else url_for('coming_soon', feature='marketplace')
-    elif section == 'scheduler':
-        redirect_url = url_for('class_scheduler') if 'class_scheduler' in globals() else url_for('coming_soon', feature='scheduler')
+    # Direct to admin login
+    redirect_url = url_for('secure_admin_login')
     
     return jsonify({
         'success': True,
