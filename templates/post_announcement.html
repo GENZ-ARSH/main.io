@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %}Post Announcement - GEN-Z LIBRARY{% endblock %}
+
+{% block content %}
+<div class="container mx-auto max-w-3xl">
+    <div class="flex items-center mb-6">
+        <a href="{{ url_for('announcements') }}" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 inline-flex items-center mr-4">
+            <i class="fas fa-arrow-left mr-2"></i> Back to Announcements
+        </a>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">📢 Post Announcement</h1>
+    </div>
+    
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+        <div class="p-6 bg-gradient-to-r from-indigo-500 to-purple-500 text-white">
+            <h2 class="text-xl font-bold flex items-center">
+                <i class="fas fa-lock mr-3"></i>
+                GENZCLANX-PROTECTED Area
+            </h2>
+            <p class="mt-1 opacity-80">
+                This form is protected. Only authorized administrators can post announcements.
+            </p>
+        </div>
+        
+        <div class="p-6">
+            <form method="POST" class="space-y-6">
+                {{ form.hidden_tag() }}
+                
+                <div class="space-y-4">
+                    <div>
+                        <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Announcement Title *
+                        </label>
+                        {{ form.title(class="w-full border border-gray-300 dark:border-gray-700 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white", placeholder="Enter announcement title") }}
+                        {% if form.title.errors %}
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ form.title.errors[0] }}</p>
+                        {% else %}
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">A clear, descriptive title for the announcement</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Announcement Content *
+                        </label>
+                        {{ form.description(class="w-full border border-gray-300 dark:border-gray-700 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white", rows=8, placeholder="Enter announcement content...") }}
+                        {% if form.description.errors %}
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ form.description.errors[0] }}</p>
+                        {% else %}
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                Detailed content of the announcement. You can use basic formatting.
+                            </p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="image_url" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Image URL (Optional)
+                        </label>
+                        {{ form.image_url(class="w-full border border-gray-300 dark:border-gray-700 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white", placeholder="https://example.com/image.jpg") }}
+                        {% if form.image_url.errors %}
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ form.image_url.errors[0] }}</p>
+                        {% else %}
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">URL to an image for the announcement banner (optional)</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="secret_code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Secret Code *
+                        </label>
+                        <div class="relative">
+                            {{ form.secret_code(class="w-full border border-gray-300 dark:border-gray-700 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white", placeholder="Enter secret code") }}
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                <i class="fas fa-shield-alt text-gray-400"></i>
+                            </div>
+                        </div>
+                        {% if form.secret_code.errors %}
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ form.secret_code.errors[0] }}</p>
+                        {% else %}
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Enter the secret admin code to post the announcement</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="flex justify-end pt-5 border-t border-gray-200 dark:border-gray-700">
+                    <div class="flex space-x-3">
+                        <a href="{{ url_for('announcements') }}" class="py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Cancel
+                        </a>
+                        {{ form.submit(class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500") }}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="mt-6 p-4 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg text-sm text-indigo-800 dark:text-indigo-300">
+        <div class="flex items-start">
+            <i class="fas fa-info-circle text-indigo-600 dark:text-indigo-400 mt-0.5 mr-3"></i>
+            <div>
+                <strong>Note:</strong> All announcements are public and will be displayed to all users of GEN-Z LIBRARY. 
+                Make sure to review your announcement carefully before posting.
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Custom focus styles */
+.focus:ring-indigo-500:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+    border-color: #6366F1;
+}
+</style>
+{% endblock %}

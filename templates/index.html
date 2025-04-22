@@ -103,6 +103,62 @@
         </div>
     </section>
     
+    <!-- GEN-Z ANNOUNCEMENTS Section -->
+    {% if announcements %}
+    <section class="mb-16">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl font-bold mb-3 flex items-center justify-center">
+                <i class="fas fa-bullhorn text-indigo-500 mr-3 animate-pulse"></i>
+                📢 GEN-Z ANNOUNCEMENTS
+            </h2>
+            <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Latest news and updates from the GEN-Z LIBRARY team.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {% for announcement in announcements %}
+            <div class="card hover:shadow-lg hover:shadow-indigo-500/10 dark:hover:shadow-indigo-900/40 overflow-hidden rounded-lg transform transition hover:scale-105 duration-300 flex flex-col">
+                {% if announcement.image_url %}
+                <div class="h-40 overflow-hidden">
+                    <img src="{{ announcement.image_url }}" alt="{{ announcement.title }}" class="w-full h-full object-cover">
+                </div>
+                {% else %}
+                <div class="h-32 bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center">
+                    <i class="fas fa-bullhorn text-4xl text-white"></i>
+                </div>
+                {% endif %}
+                
+                <div class="p-5 flex-grow">
+                    <h3 class="text-xl font-bold mb-2 text-indigo-600 dark:text-indigo-400">{{ announcement.title }}</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
+                        {{ announcement.description|truncate(100) }}
+                    </p>
+                </div>
+                
+                <div class="p-4 border-t border-gray-200 dark:border-gray-700 mt-auto flex justify-between items-center">
+                    <span class="text-xs text-gray-500 dark:text-gray-400 flex items-center">
+                        <i class="far fa-calendar-alt mr-1"></i>
+                        {{ announcement.post_date.strftime('%b %d, %Y') }}
+                    </span>
+                    
+                    <a href="{{ url_for('announcement_detail', announcement_id=announcement.id) }}" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 text-sm">
+                        Read more
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-8">
+            <a href="{{ url_for('announcements') }}" class="inline-flex items-center px-5 py-2 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                <i class="fas fa-bullhorn mr-2"></i>
+                View All Announcements
+            </a>
+        </div>
+    </section>
+    {% endif %}
+    
     <!-- Categories Section -->
     <section id="categories" class="mb-16">
         <div class="text-center mb-10">
