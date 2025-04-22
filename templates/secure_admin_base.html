@@ -163,34 +163,37 @@
                 </div>
                 
                 <!-- Navigation Links -->
-                <div class="hidden md:flex items-center space-x-6">
-                    <a href="{{ url_for('admin_book_management') }}" class="flex items-center text-white hover:text-indigo-300 transition-colors duration-300 {% if request.endpoint == 'admin_book_management' %}text-indigo-400{% endif %}">
-                        <i class="fas fa-books mr-2"></i> Book Management
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="{{ url_for('admin_book_management') }}" class="cyber-button flex items-center {% if request.endpoint == 'admin_book_management' %}border-neon-cyan text-neon-cyan{% else %}border-white/30 text-white/80 hover:border-neon-pink hover:text-neon-pink{% endif %}">
+                        <i class="fas fa-book-open mr-2"></i> LIBRARY_MGR
                     </a>
-                    <a href="{{ url_for('upload_book') }}" class="flex items-center text-white hover:text-indigo-300 transition-colors duration-300 {% if request.endpoint == 'upload_book' %}text-indigo-400{% endif %}">
-                        <i class="fas fa-upload mr-2"></i> Upload Book
+                    <a href="{{ url_for('upload_book') }}" class="cyber-button flex items-center {% if request.endpoint == 'upload_book' %}border-neon-cyan text-neon-cyan{% else %}border-white/30 text-white/80 hover:border-neon-pink hover:text-neon-pink{% endif %}">
+                        <i class="fas fa-upload mr-2"></i> UPLOAD
                     </a>
-                    <a href="{{ url_for('admin_dashboard') }}" class="flex items-center text-white hover:text-indigo-300 transition-colors duration-300">
-                        <i class="fas fa-chart-pie mr-2"></i> Dashboard
+                    <a href="{{ url_for('admin_dashboard') }}" class="cyber-button flex items-center {% if request.endpoint == 'admin_dashboard' %}border-neon-cyan text-neon-cyan{% else %}border-white/30 text-white/80 hover:border-neon-pink hover:text-neon-pink{% endif %}">
+                        <i class="fas fa-chart-network mr-2"></i> DASHBOARD
                     </a>
                 </div>
                 
                 <!-- User Menu -->
                 <div class="flex items-center space-x-4">
-                    <a href="{{ url_for('index') }}" class="text-white hover:text-indigo-300 transition-colors duration-300">
-                        <i class="fas fa-home"></i>
-                        <span class="ml-2 hidden md:inline">Back to Home</span>
+                    <a href="{{ url_for('index') }}" class="flex items-center text-neon-cyan hover:text-neon-pink transition-colors duration-300">
+                        <div class="relative flex items-center justify-center h-8 w-8">
+                            <i class="fas fa-house text-lg"></i>
+                            <div class="absolute inset-0 border border-neon-cyan rounded-sm" style="transform: rotate(45deg);"></div>
+                        </div>
+                        <span class="ml-2 hidden md:inline font-mono text-xs">EXIT_CONSOLE</span>
                     </a>
                     
                     <div class="relative group">
-                        <button class="neon-btn flex items-center space-x-2 py-1.5 px-3">
-                            <i class="fas fa-user-shield text-indigo-400"></i>
-                            <span class="hidden md:inline">Admin</span>
-                            <i class="fas fa-chevron-down text-xs ml-1"></i>
+                        <button class="flex items-center space-x-2 py-1.5 px-3 bg-black/30 border border-neon-cyan/50 text-neon-cyan hover:border-neon-pink hover:text-neon-pink transition-all duration-300">
+                            <i class="fas fa-user-shield"></i>
+                            <span class="hidden md:inline font-mono text-xs">ADMIN_ACCESS</span>
+                            <i class="fas fa-caret-down text-xs ml-1"></i>
                         </button>
-                        <div class="absolute right-0 mt-2 w-48 backdrop-blur-lg bg-black/40 border border-white/10 rounded-lg shadow-glow-indigo overflow-hidden z-20 hidden group-hover:block">
-                            <a href="{{ url_for('logout') }}" class="block p-3 text-sm hover:bg-indigo-600/20 transition-colors">
-                                <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                        <div class="absolute right-0 mt-2 w-48 bg-black/80 backdrop-blur-lg border border-neon-cyan/20 shadow-glow-indigo overflow-hidden z-20 hidden group-hover:block transform transition-transform duration-300 origin-top-right scale-95 group-hover:scale-100">
+                            <a href="{{ url_for('logout') }}" class="block p-3 text-sm border-l-2 border-neon-pink text-white/80 hover:text-neon-pink hover:bg-neon-pink/10 transition-colors font-mono">
+                                <i class="fas fa-power-off mr-2"></i> SYSTEM_LOGOUT
                             </a>
                         </div>
                     </div>
@@ -199,24 +202,44 @@
         </div>
     </nav>
     
-    <!-- Flash Messages -->
+    <!-- Cyberpunk Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <div class="fixed top-20 right-4 z-50">
                 {% for category, message in messages %}
-                    <div class="flash-message p-4 mb-4 rounded-md backdrop-blur-md {% if category == 'error' %}bg-red-500/80 shadow-glow-pink{% else %}bg-emerald-500/80 shadow-glow-blue{% endif %} text-white">
-                        <div class="flex items-start">
-                            {% if category == 'error' %}
-                                <i class="fas fa-exclamation-circle text-xl mr-3 mt-0.5"></i>
-                            {% else %}
-                                <i class="fas fa-check-circle text-xl mr-3 mt-0.5"></i>
-                            {% endif %}
-                            <div>
-                                <p class="font-bold">{{ 'Error' if category == 'error' else 'Success' }}</p>
-                                <p>{{ message }}</p>
+                    <div class="flash-message mb-4 cyberpunk-card overflow-hidden {% if category == 'error' %}border-neon-pink shadow-glow-pink{% else %}border-neon-cyan shadow-glow-cyan{% endif %}">
+                        <div class="py-1 px-3 text-xs font-mono tracking-wider text-black bg-gradient-to-r {% if category == 'error' %}from-red-500 to-neon-pink{% else %}from-green-500 to-neon-cyan{% endif %} flex items-center justify-between">
+                            <div class="flex items-center">
+                                {% if category == 'error' %}
+                                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                                    <span>SYSTEM_ERROR</span>
+                                {% else %}
+                                    <i class="fas fa-check-circle mr-2"></i>
+                                    <span>OPERATION_SUCCESS</span>
+                                {% endif %}
+                            </div>
+                            <span class="text-xs opacity-70">GENZ_SYS {{ '00:' ~ range(10, 99) | random }}</span>
+                        </div>
+                        <div class="p-4 bg-black/80 backdrop-blur-md">
+                            <div class="flex items-start">
+                                <div class="mr-3 mt-1">
+                                    {% if category == 'error' %}
+                                        <div class="h-4 w-4 rounded-full bg-neon-pink cyber-pulse"></div>
+                                    {% else %}
+                                        <div class="h-4 w-4 rounded-full bg-neon-cyan cyber-pulse"></div>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <p class="text-sm font-mono text-white mb-1">{{ message }}</p>
+                                    <div class="flex space-x-1">
+                                        <div class="h-1 w-1 rounded-full {% if category == 'error' %}bg-neon-pink{% else %}bg-neon-cyan{% endif %} pulsate-fast"></div>
+                                        <div class="h-1 w-1 rounded-full {% if category == 'error' %}bg-neon-pink{% else %}bg-neon-cyan{% endif %} pulsate-fast delay-100"></div>
+                                        <div class="h-1 w-1 rounded-full {% if category == 'error' %}bg-neon-pink{% else %}bg-neon-cyan{% endif %} pulsate-fast delay-200"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <button class="absolute top-2 right-2 text-white/80 hover:text-white focus:outline-none" onclick="this.parentElement.remove()">
+                        <button class="absolute top-1 right-1 text-black hover:text-white focus:outline-none" onclick="this.parentElement.remove()">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
@@ -230,26 +253,57 @@
         {% block content %}{% endblock %}
     </main>
     
-    <!-- Admin Footer -->
-    <footer class="mt-12 backdrop-blur-lg bg-black/20 border-t border-white/10 py-4">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-4 md:mb-0">
-                    <p class="text-indigo-300 text-sm">
-                        <i class="fas fa-shield-alt mr-2"></i> Secure Admin Area - GEN-Z LIBRARY
+    <!-- Cyberpunk Admin Footer -->
+    <footer class="mt-12 bg-black/40 border-t border-neon-cyan/20 pt-3">
+        <div class="glow-line-sm"></div>
+        <div class="container mx-auto px-4 py-3">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- System Info -->
+                <div class="terminal-text p-3 rounded-sm text-xs">
+                    <div class="flex items-center">
+                        <div class="flex space-x-1 mr-2">
+                            <div class="h-2 w-2 rounded-full bg-neon-cyan pulsate-fast"></div>
+                            <div class="h-2 w-2 rounded-full bg-neon-pink pulsate-fast delay-100"></div>
+                        </div>
+                        <span class="uppercase tracking-wider">GENZ_SYSTEM v2.5</span>
+                    </div>
+                    <p class="mt-1 opacity-70">
+                        :: RUNTIME: ACTIVE :: ACCESS: ADMIN :: MODE: SECURE
                     </p>
                 </div>
-                <div class="flex space-x-6">
-                    <a href="{{ url_for('index') }}" class="text-indigo-300 hover:text-white transition-colors">
-                        <i class="fas fa-home mr-1"></i> Home
+                
+                <!-- Cyberpunk Badge -->
+                <div class="flex justify-center items-center">
+                    <div class="cyber-border p-2 text-center">
+                        <div class="text-neon-cyan font-mono text-xs tracking-wider">MADE WITH ❤️ BY</div>
+                        <div class="text-lg font-bold glitch-text" data-text="GENZ-ARSH">GENZ-ARSH</div>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="flex justify-end space-x-3">
+                    <a href="{{ url_for('index') }}" class="inline-flex flex-col items-center text-neon-cyan hover:text-neon-pink transition-colors cyber-pulse p-2">
+                        <i class="fas fa-home text-lg"></i>
+                        <span class="text-xs font-mono mt-1">HOME</span>
                     </a>
-                    <a href="{{ url_for('admin_dashboard') }}" class="text-indigo-300 hover:text-white transition-colors">
-                        <i class="fas fa-tachometer-alt mr-1"></i> Dashboard
+                    <a href="{{ url_for('admin_dashboard') }}" class="inline-flex flex-col items-center text-neon-cyan hover:text-neon-pink transition-colors cyber-pulse p-2">
+                        <i class="fas fa-chart-line text-lg"></i>
+                        <span class="text-xs font-mono mt-1">STATS</span>
                     </a>
-                    <a href="{{ url_for('logout') }}" class="text-indigo-300 hover:text-white transition-colors">
-                        <i class="fas fa-sign-out-alt mr-1"></i> Logout
+                    <a href="{{ url_for('logout') }}" class="inline-flex flex-col items-center text-neon-pink hover:text-neon-yellow transition-colors cyber-pulse p-2">
+                        <i class="fas fa-power-off text-lg"></i>
+                        <span class="text-xs font-mono mt-1">EXIT</span>
                     </a>
                 </div>
+            </div>
+            
+            <!-- Tech decorations -->
+            <div class="mt-4 flex justify-between items-center">
+                <div class="h-px flex-grow bg-gradient-to-r from-transparent via-neon-cyan to-transparent"></div>
+                <div class="px-4 text-xs font-mono text-neon-cyan/50 flex items-center">
+                    <span class="hidden sm:inline">GENZCLANX_TERMINAL_</span><span class="cyber-pulse inline-block">&#9608;</span>
+                </div>
+                <div class="h-px flex-grow bg-gradient-to-r from-transparent via-neon-pink to-transparent"></div>
             </div>
         </div>
     </footer>
