@@ -1,0 +1,339 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ feature_name }} - Coming Soon | GEN-Z LIBRARY{% endblock %}
+
+{% block styles %}
+<style>
+    .coming-soon-pulse {
+        animation: pulse 1.5s infinite alternate;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        100% { transform: scale(1.05); }
+    }
+    
+    .coming-soon-badge {
+        background: linear-gradient(135deg, #4f46e5, #ec4899);
+    }
+    
+    .countdown-number {
+        @apply text-4xl font-bold bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-400 rounded-lg w-16 h-16 flex items-center justify-center;
+    }
+    
+    .countdown-label {
+        @apply text-xs text-gray-500 dark:text-gray-400 mt-1;
+    }
+    
+    .countdown-container {
+        animation: fadeInUp 1s;
+    }
+    
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="flex flex-col items-center justify-center text-center">
+        <!-- Coming Soon Badge -->
+        <div class="coming-soon-badge text-white px-4 py-2 rounded-full text-xs font-bold mb-6 inline-flex items-center">
+            <span class="mr-1">⚡</span> COMING SOON
+        </div>
+        
+        <!-- Feature Title -->
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ feature_name }}</h1>
+        
+        <!-- Description -->
+        <p class="text-gray-600 dark:text-gray-400 max-w-2xl mb-8">
+            We're working hard to bring this exciting feature to GEN-Z LIBRARY. 
+            Our team is building something amazing just for you! Stay tuned and check back soon.
+        </p>
+        
+        <!-- Illustration -->
+        <div class="coming-soon-pulse mb-10">
+            {% if feature == 'battle' %}
+                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97" alt="Battle Arena" class="max-w-md rounded-lg shadow-2xl mx-auto">
+            {% elif feature == 'internship' %}
+                <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d" alt="Internship Portal" class="max-w-md rounded-lg shadow-2xl mx-auto">
+            {% elif feature == 'ai' %}
+                <img src="https://images.unsplash.com/photo-1677442135111-3a6c9c351861" alt="AI Feature Center" class="max-w-md rounded-lg shadow-2xl mx-auto">
+            {% elif feature == 'marketplace' %}
+                <img src="https://images.unsplash.com/photo-1472851294608-062f824d29cc" alt="GENZ Marketplace" class="max-w-md rounded-lg shadow-2xl mx-auto">
+            {% elif feature == 'scheduler' %}
+                <img src="https://images.unsplash.com/photo-1611224885990-ab7363d1f2a9" alt="Live Class Scheduler" class="max-w-md rounded-lg shadow-2xl mx-auto">
+            {% else %}
+                <img src="https://images.unsplash.com/photo-1485627941502-d2e6429a8af0" alt="Coming Soon" class="max-w-md rounded-lg shadow-2xl mx-auto">
+            {% endif %}
+        </div>
+        
+        <!-- Countdown -->
+        <div class="countdown-container mb-12">
+            <h3 class="text-xl font-bold mb-4">Launching in:</h3>
+            <div class="flex space-x-4 justify-center">
+                <div class="text-center">
+                    <div class="countdown-number">14</div>
+                    <div class="countdown-label">Days</div>
+                </div>
+                <div class="text-center">
+                    <div class="countdown-number">22</div>
+                    <div class="countdown-label">Hours</div>
+                </div>
+                <div class="text-center">
+                    <div class="countdown-number">45</div>
+                    <div class="countdown-label">Minutes</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Feature Info -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-12">
+            {% if feature == 'battle' %}
+                <div class="card p-4">
+                    <div class="text-indigo-600 mb-2">
+                        <i class="fas fa-trophy text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold mb-1">Leaderboards</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Compete with other GENZ members and rise to the top.</p>
+                </div>
+                <div class="card p-4">
+                    <div class="text-indigo-600 mb-2">
+                        <i class="fas fa-medal text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold mb-1">Badges & Achievements</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Earn special badges for your accomplishments.</p>
+                </div>
+                <div class="card p-4">
+                    <div class="text-indigo-600 mb-2">
+                        <i class="fas fa-bolt text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold mb-1">XP System</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Level up as you complete challenges and quests.</p>
+                </div>
+            {% elif feature == 'internship' %}
+                <div class="card p-4">
+                    <div class="text-indigo-600 mb-2">
+                        <i class="fas fa-user-tie text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold mb-1">Join the Team</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Apply for various roles in the GENZ ecosystem.</p>
+                </div>
+                <div class="card p-4">
+                    <div class="text-indigo-600 mb-2">
+                        <i class="fas fa-certificate text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold mb-1">Certification</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Earn official GENZ certificates for your resume.</p>
+                </div>
+                <div class="card p-4">
+                    <div class="text-indigo-600 mb-2">
+                        <i class="fas fa-handshake text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold mb-1">Mentorship</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Learn from experienced members of the community.</p>
+                </div>
+            {% elif feature == 'ai' %}
+                <div class="card p-4">
+                    <div class="text-indigo-600 mb-2">
+                        <i class="fas fa-brain text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold mb-1">Book Summaries</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Get AI-generated summaries of any book instantly.</p>
+                </div>
+                <div class="card p-4">
+                    <div class="text-indigo-600 mb-2">
+                        <i class="fas fa-robot text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold mb-1">Study Quizzes</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Generate tailored quizzes for effective learning.</p>
+                </div>
+                <div class="card p-4">
+                    <div class="text-indigo-600 mb-2">
+                        <i class="fas fa-lightbulb text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold mb-1">Smart Recommendations</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Get personalized book recommendations.</p>
+                </div>
+            {% elif feature == 'marketplace' %}
+                <div class="card p-4">
+                    <div class="text-indigo-600 mb-2">
+                        <i class="fas fa-exchange-alt text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold mb-1">Exchange System</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Trade materials with other students directly.</p>
+                </div>
+                <div class="card p-4">
+                    <div class="text-indigo-600 mb-2">
+                        <i class="fas fa-coins text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold mb-1">GENZ Points</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Earn and spend virtual currency for resources.</p>
+                </div>
+                <div class="card p-4">
+                    <div class="text-indigo-600 mb-2">
+                        <i class="fas fa-store text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold mb-1">Digital Store</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Access premium study materials with your points.</p>
+                </div>
+            {% elif feature == 'scheduler' %}
+                <div class="card p-4">
+                    <div class="text-indigo-600 mb-2">
+                        <i class="fas fa-video text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold mb-1">Zoom Integration</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Join classes with one-click video conferencing.</p>
+                </div>
+                <div class="card p-4">
+                    <div class="text-indigo-600 mb-2">
+                        <i class="fas fa-calendar-alt text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold mb-1">Study Planner</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Organize your study sessions efficiently.</p>
+                </div>
+                <div class="card p-4">
+                    <div class="text-indigo-600 mb-2">
+                        <i class="fas fa-users text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold mb-1">Group Study</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Create or join collaborative study sessions.</p>
+                </div>
+            {% else %}
+                <div class="card p-4">
+                    <div class="text-indigo-600 mb-2">
+                        <i class="fas fa-star text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold mb-1">New Features</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Exciting new capabilities coming soon.</p>
+                </div>
+                <div class="card p-4">
+                    <div class="text-indigo-600 mb-2">
+                        <i class="fas fa-magic text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold mb-1">Enhanced Experience</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">A completely transformed learning journey.</p>
+                </div>
+                <div class="card p-4">
+                    <div class="text-indigo-600 mb-2">
+                        <i class="fas fa-rocket text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold mb-1">Innovative Tools</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Cutting-edge technology for better education.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Actions -->
+        <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+            <a href="{{ url_for('index') }}" class="btn-primary py-3 px-6 rounded-md inline-flex items-center justify-center">
+                <i class="fas fa-home mr-2"></i> Back to Home
+            </a>
+            <button type="button" id="notifyMeBtn" class="btn-outline py-3 px-6 rounded-md inline-flex items-center justify-center">
+                <i class="fas fa-bell mr-2"></i> Notify Me
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Notify Modal -->
+<div id="notifyModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 max-w-md w-full transform transition-transform scale-95 opacity-0" id="notifyModalContent">
+        <div class="text-center mb-6">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-500 mb-4">
+                <i class="fas fa-bell text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white">Get Notified</h3>
+            <p class="text-gray-600 dark:text-gray-400 mt-1">
+                We'll let you know when {{ feature_name }} launches
+            </p>
+        </div>
+        
+        <form id="notifyForm">
+            <div class="mb-4">
+                <label for="notifyEmail" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email Address</label>
+                <input type="email" id="notifyEmail" name="notifyEmail" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white" placeholder="your@email.com" required>
+            </div>
+            
+            <div class="mb-4">
+                <label class="flex items-center">
+                    <input type="checkbox" class="form-checkbox h-5 w-5 text-indigo-600" required>
+                    <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">I agree to receive email notifications</span>
+                </label>
+            </div>
+            
+            <div class="flex items-center justify-between mt-6">
+                <button type="button" id="closeModalBtn" class="text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">Cancel</button>
+                <button type="submit" class="btn-primary py-2 px-4 rounded-md">Subscribe</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Notify Modal
+        const notifyModal = document.getElementById('notifyModal');
+        const notifyModalContent = document.getElementById('notifyModalContent');
+        const notifyMeBtn = document.getElementById('notifyMeBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const notifyForm = document.getElementById('notifyForm');
+        
+        function openModal() {
+            notifyModal.classList.remove('hidden');
+            setTimeout(() => {
+                notifyModalContent.classList.remove('scale-95', 'opacity-0');
+                notifyModalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+        
+        function closeModal() {
+            notifyModalContent.classList.remove('scale-100', 'opacity-100');
+            notifyModalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                notifyModal.classList.add('hidden');
+            }, 300);
+        }
+        
+        notifyMeBtn.addEventListener('click', openModal);
+        closeModalBtn.addEventListener('click', closeModal);
+        
+        // Close modal when clicking outside content
+        notifyModal.addEventListener('click', function(e) {
+            if (e.target === notifyModal) {
+                closeModal();
+            }
+        });
+        
+        // Handle notify form submission
+        notifyForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('notifyEmail').value;
+            
+            // Here you would typically send this to your backend
+            console.log(`Subscribing ${email} for ${feature} notifications`);
+            
+            closeModal();
+            
+            // Show success message
+            const flashContainer = document.createElement('div');
+            flashContainer.className = 'fixed top-20 right-4 z-50 p-4 rounded-md bg-green-500 text-white';
+            flashContainer.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    <p>Great! We'll notify you when ${feature} launches.</p>
+                </div>
+            `;
+            document.body.appendChild(flashContainer);
+            
+            setTimeout(() => {
+                flashContainer.remove();
+            }, 5000);
+        });
+    });
+</script>
+{% endblock %}

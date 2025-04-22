@@ -349,6 +349,65 @@ def toggle_theme():
     session['theme'] = new_theme
     return jsonify({'theme': new_theme})
 
+# GENZ Secure Access Routes 
+@app.route('/verify-access', methods=['POST'])
+def verify_access():
+    """Verify the provided access code for secure sections"""
+    data = request.json
+    section = data.get('section')
+    code = data.get('code')
+    
+    # Check if the code matches the GENZCLANX secure code
+    if code != 'GENZCLANX':
+        return jsonify({
+            'success': False,
+            'message': 'Invalid access code. Please try again.'
+        }), 401
+    
+    # Track access in session
+    if 'secure_access' not in session:
+        session['secure_access'] = []
+    
+    if section not in session['secure_access']:
+        session['secure_access'].append(section)
+    
+    # Determine redirect URL based on section
+    redirect_url = url_for('index')
+    if section == 'admin':
+        redirect_url = url_for('secure_admin_login')
+    # Other sections to be implemented later
+    elif section == 'battle':
+        redirect_url = url_for('battle_arena') if 'battle_arena' in globals() else url_for('coming_soon', feature='battle')
+    elif section == 'internship':
+        redirect_url = url_for('internship_portal') if 'internship_portal' in globals() else url_for('coming_soon', feature='internship')
+    elif section == 'ai':
+        redirect_url = url_for('ai_center') if 'ai_center' in globals() else url_for('coming_soon', feature='ai')
+    elif section == 'marketplace':
+        redirect_url = url_for('marketplace') if 'marketplace' in globals() else url_for('coming_soon', feature='marketplace')
+    elif section == 'scheduler':
+        redirect_url = url_for('class_scheduler') if 'class_scheduler' in globals() else url_for('coming_soon', feature='scheduler')
+    
+    return jsonify({
+        'success': True,
+        'message': 'Access granted!',
+        'redirect': redirect_url
+    })
+
+@app.route('/coming-soon/<feature>')
+def coming_soon(feature):
+    """Placeholder for features that are coming soon"""
+    feature_names = {
+        'battle': 'Battle Arena',
+        'internship': 'Internship Portal', 
+        'ai': 'AI Feature Center',
+        'marketplace': 'GENZ Marketplace',
+        'scheduler': 'Live Class Scheduler'
+    }
+    
+    return render_template('coming_soon.html', 
+                          feature=feature,
+                          feature_name=feature_names.get(feature, 'This Feature'))
+
 @app.context_processor
 def inject_theme():
     return dict(theme=session.get('theme', 'light'))

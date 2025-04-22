@@ -83,25 +83,203 @@
             
             <div class="card p-6 rounded-lg">
                 <div class="text-indigo-600 mb-4">
+                    <i class="fas fa-bullhorn text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">📢 Announcements</h3>
+                <p class="text-gray-600 dark:text-gray-400">
+                    Stay updated with the latest announcements from our GENZ team.
+                </p>
+                <div class="mt-4">
+                    <a href="{{ url_for('announcements') }}" class="btn-primary py-2 px-4 rounded-md inline-flex items-center">
+                        <i class="fas fa-arrow-right mr-1"></i> View
+                    </a>
+                </div>
+            </div>
+            
+            <div class="card p-6 rounded-lg">
+                <div class="text-indigo-600 mb-4">
                     <i class="fas fa-envelope text-3xl"></i>
                 </div>
                 <h3 class="text-xl font-bold mb-2">📩 Book Requests</h3>
                 <p class="text-gray-600 dark:text-gray-400">
                     Can't find what you need? Request books and we'll add them to our library.
                 </p>
-            </div>
-            
-            <div class="card p-6 rounded-lg">
-                <div class="text-indigo-600 mb-4">
-                    <i class="fas fa-user-shield text-3xl"></i>
+                <div class="mt-4">
+                    <a href="{{ url_for('request_book') }}" class="btn-primary py-2 px-4 rounded-md inline-flex items-center">
+                        <i class="fas fa-arrow-right mr-1"></i> Request
+                    </a>
                 </div>
-                <h3 class="text-xl font-bold mb-2">🧑‍💼 Join as Admin</h3>
-                <p class="text-gray-600 dark:text-gray-400">
-                    Apply to become part of the GEN-Z CLAN and help manage the library.
-                </p>
             </div>
         </div>
     </section>
+    
+    <!-- GENZ Advanced Features Section -->
+    <section class="mb-16">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl font-bold mb-3">⚔️ GENZ Power Features</h2>
+            <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Access to advanced features for GEN-Z CLAN members. Each section requires the GENZCLANX access code.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="card p-6 rounded-lg border-2 border-indigo-500/40 relative overflow-hidden group">
+                <!-- Corner decoration -->
+                <div class="absolute top-0 right-0 w-16 h-16 overflow-hidden">
+                    <div class="bg-indigo-500 rotate-45 transform origin-bottom-right w-22 h-22 absolute -right-3 -top-8"></div>
+                    <i class="fas fa-lock text-white absolute right-2 top-2 z-10"></i>
+                </div>
+                
+                <div class="text-indigo-600 mb-4">
+                    <i class="fas fa-user-shield text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">🛡️ Admin Dashboard</h3>
+                <p class="text-gray-600 dark:text-gray-400">
+                    Access the admin dashboard to manage books, users, requests and more. GENZCLANX protected.
+                </p>
+                <div class="mt-4">
+                    <button type="button" data-section="admin" class="secure-access-btn btn-primary py-2 px-4 rounded-md inline-flex items-center">
+                        <i class="fas fa-key mr-1"></i> Secure Access
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card p-6 rounded-lg border-2 border-indigo-500/40 relative overflow-hidden group">
+                <!-- Corner decoration -->
+                <div class="absolute top-0 right-0 w-16 h-16 overflow-hidden">
+                    <div class="bg-indigo-500 rotate-45 transform origin-bottom-right w-22 h-22 absolute -right-3 -top-8"></div>
+                    <i class="fas fa-lock text-white absolute right-2 top-2 z-10"></i>
+                </div>
+                
+                <div class="text-indigo-600 mb-4">
+                    <i class="fas fa-gamepad text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">🎮 Battle Arena</h3>
+                <p class="text-gray-600 dark:text-gray-400">
+                    Join the leaderboard competition with other GENZ members. Earn badges and XP. Coming soon!
+                </p>
+                <div class="mt-4">
+                    <button type="button" data-section="battle" class="secure-access-btn btn-primary py-2 px-4 rounded-md inline-flex items-center">
+                        <i class="fas fa-key mr-1"></i> Secure Access
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card p-6 rounded-lg border-2 border-indigo-500/40 relative overflow-hidden group">
+                <!-- Corner decoration -->
+                <div class="absolute top-0 right-0 w-16 h-16 overflow-hidden">
+                    <div class="bg-indigo-500 rotate-45 transform origin-bottom-right w-22 h-22 absolute -right-3 -top-8"></div>
+                    <i class="fas fa-lock text-white absolute right-2 top-2 z-10"></i>
+                </div>
+                
+                <div class="text-indigo-600 mb-4">
+                    <i class="fas fa-briefcase text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">💼 Internship Portal</h3>
+                <p class="text-gray-600 dark:text-gray-400">
+                    Apply for internships with the GENZ team. Join as moderator, developer or uploader.
+                </p>
+                <div class="mt-4">
+                    <button type="button" data-section="internship" class="secure-access-btn btn-primary py-2 px-4 rounded-md inline-flex items-center">
+                        <i class="fas fa-key mr-1"></i> Secure Access
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card p-6 rounded-lg border-2 border-indigo-500/40 relative overflow-hidden group">
+                <!-- Corner decoration -->
+                <div class="absolute top-0 right-0 w-16 h-16 overflow-hidden">
+                    <div class="bg-indigo-500 rotate-45 transform origin-bottom-right w-22 h-22 absolute -right-3 -top-8"></div>
+                    <i class="fas fa-lock text-white absolute right-2 top-2 z-10"></i>
+                </div>
+                
+                <div class="text-indigo-600 mb-4">
+                    <i class="fas fa-brain text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">🧠 AI Feature Center</h3>
+                <p class="text-gray-600 dark:text-gray-400">
+                    Access to AI-powered tools for summarizing books, generating questions, and more.
+                </p>
+                <div class="mt-4">
+                    <button type="button" data-section="ai" class="secure-access-btn btn-primary py-2 px-4 rounded-md inline-flex items-center">
+                        <i class="fas fa-key mr-1"></i> Secure Access
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card p-6 rounded-lg border-2 border-indigo-500/40 relative overflow-hidden group">
+                <!-- Corner decoration -->
+                <div class="absolute top-0 right-0 w-16 h-16 overflow-hidden">
+                    <div class="bg-indigo-500 rotate-45 transform origin-bottom-right w-22 h-22 absolute -right-3 -top-8"></div>
+                    <i class="fas fa-lock text-white absolute right-2 top-2 z-10"></i>
+                </div>
+                
+                <div class="text-indigo-600 mb-4">
+                    <i class="fas fa-store text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">🛍️ GENZ Marketplace</h3>
+                <p class="text-gray-600 dark:text-gray-400">
+                    Exchange study materials with other members using GENZ Points. No real money involved.
+                </p>
+                <div class="mt-4">
+                    <button type="button" data-section="marketplace" class="secure-access-btn btn-primary py-2 px-4 rounded-md inline-flex items-center">
+                        <i class="fas fa-key mr-1"></i> Secure Access
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card p-6 rounded-lg border-2 border-indigo-500/40 relative overflow-hidden group">
+                <!-- Corner decoration -->
+                <div class="absolute top-0 right-0 w-16 h-16 overflow-hidden">
+                    <div class="bg-indigo-500 rotate-45 transform origin-bottom-right w-22 h-22 absolute -right-3 -top-8"></div>
+                    <i class="fas fa-lock text-white absolute right-2 top-2 z-10"></i>
+                </div>
+                
+                <div class="text-indigo-600 mb-4">
+                    <i class="fas fa-calendar-check text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">📅 Live Class Scheduler</h3>
+                <p class="text-gray-600 dark:text-gray-400">
+                    Schedule and join online study sessions, Zoom classes, and collaborative learning.
+                </p>
+                <div class="mt-4">
+                    <button type="button" data-section="scheduler" class="secure-access-btn btn-primary py-2 px-4 rounded-md inline-flex items-center">
+                        <i class="fas fa-key mr-1"></i> Secure Access
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Secret Access Modal -->
+    <div id="secureAccessModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 max-w-md w-full transform transition-transform scale-95 opacity-0" id="secureModalContent">
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-500 mb-4">
+                    <i class="fas fa-shield-alt text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white" id="secureModalTitle">Secure Access Required</h3>
+                <p class="text-gray-600 dark:text-gray-400 mt-1" id="secureModalDescription">
+                    Enter the GENZCLANX code to access this feature
+                </p>
+            </div>
+            
+            <form id="secureAccessForm">
+                <div class="mb-4">
+                    <label for="accessCode" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Access Code</label>
+                    <input type="password" id="accessCode" name="accessCode" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white" placeholder="Enter GENZCLANX code" required>
+                    <p id="accessError" class="text-red-500 text-sm mt-1 hidden">Invalid code. Access denied.</p>
+                </div>
+                
+                <input type="hidden" id="requestedSection" name="requestedSection" value="">
+                
+                <div class="flex items-center justify-between mt-6">
+                    <button type="button" id="closeModalBtn" class="text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">Cancel</button>
+                    <button type="submit" class="btn-primary py-2 px-4 rounded-md">Authenticate</button>
+                </div>
+            </form>
+        </div>
+    </div>
     
     <!-- GEN-Z ANNOUNCEMENTS Section -->
     {% if announcements %}
@@ -257,4 +435,127 @@
         </div>
     </section>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Dark mode toggle functionality is in darkmode.js
+        
+        // Secure Access Modal Functionality
+        const secureAccessModal = document.getElementById('secureAccessModal');
+        const secureModalContent = document.getElementById('secureModalContent');
+        const secureAccessButtons = document.querySelectorAll('.secure-access-btn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const secureAccessForm = document.getElementById('secureAccessForm');
+        const requestedSectionInput = document.getElementById('requestedSection');
+        const accessError = document.getElementById('accessError');
+        const secureModalTitle = document.getElementById('secureModalTitle');
+        const secureModalDescription = document.getElementById('secureModalDescription');
+        
+        // Feature names mapping
+        const featureNames = {
+            'admin': 'Admin Dashboard',
+            'battle': 'Battle Arena',
+            'internship': 'Internship Portal',
+            'ai': 'AI Feature Center',
+            'marketplace': 'GENZ Marketplace',
+            'scheduler': 'Live Class Scheduler'
+        };
+        
+        // Open secure access modal
+        function openSecureModal(section) {
+            requestedSectionInput.value = section;
+            secureModalTitle.textContent = `Secure Access: ${featureNames[section] || section}`;
+            secureModalDescription.textContent = `Enter the GENZCLANX code to access ${featureNames[section] || 'this feature'}`;
+            
+            secureAccessModal.classList.remove('hidden');
+            setTimeout(() => {
+                secureModalContent.classList.remove('scale-95', 'opacity-0');
+                secureModalContent.classList.add('scale-100', 'opacity-100');
+                document.getElementById('accessCode').focus();
+            }, 10);
+        }
+        
+        // Close secure access modal
+        function closeSecureModal() {
+            secureModalContent.classList.remove('scale-100', 'opacity-100');
+            secureModalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                secureAccessModal.classList.add('hidden');
+                secureAccessForm.reset();
+                accessError.classList.add('hidden');
+            }, 300);
+        }
+        
+        // Set up event listeners for secure access buttons
+        secureAccessButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const section = this.getAttribute('data-section');
+                openSecureModal(section);
+            });
+        });
+        
+        // Close modal button
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', closeSecureModal);
+        }
+        
+        // Close modal when clicking outside content
+        secureAccessModal.addEventListener('click', function(e) {
+            if (e.target === secureAccessModal) {
+                closeSecureModal();
+            }
+        });
+        
+        // Handle secure access form submission
+        secureAccessForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const accessCode = document.getElementById('accessCode').value;
+            const section = requestedSectionInput.value;
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-1"></i> Verifying...';
+            submitBtn.disabled = true;
+            
+            // Send verification request
+            fetch('/verify-access', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    code: accessCode,
+                    section: section
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Access granted, redirect
+                    window.location.href = data.redirect;
+                } else {
+                    // Show error
+                    accessError.classList.remove('hidden');
+                    accessError.textContent = data.message || 'Invalid code. Access denied.';
+                    
+                    // Reset button
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.disabled = false;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                accessError.classList.remove('hidden');
+                accessError.textContent = 'An error occurred. Please try again.';
+                
+                // Reset button
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            });
+        });
+    });
+</script>
 {% endblock %}
