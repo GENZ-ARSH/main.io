@@ -116,14 +116,14 @@ def books(category):
     tag = request.args.get('tag', '')
     
     books_list = get_all_books(category, search, tag)
-    category_info = next((c for c in Config.CATEGORIES if c['id'] == category), None)
+    category_info = next((c for c in app.config['CATEGORIES'] if c['id'] == category), None)
     
     return render_template('books.html', 
                            books=books_list, 
                            category=category_info,
                            search=search,
                            tag=tag,
-                           subjects=Config.SUBJECTS)
+                           subjects=app.config['SUBJECTS'])
 
 @app.route('/book/<int:book_id>')
 def book_detail(book_id):
@@ -222,8 +222,8 @@ def upload_book():
         if not all([title, author, category, file_url]):
             flash('Please fill all required fields', 'error')
             return render_template('book_upload.html', 
-                                   categories=Config.CATEGORIES,
-                                   subjects=Config.SUBJECTS)
+                                   categories=app.config['CATEGORIES'],
+                                   subjects=app.config['SUBJECTS'])
         
         # Create new book
         book = Book(
@@ -245,8 +245,8 @@ def upload_book():
         return redirect(url_for('admin_dashboard'))
     
     return render_template('book_upload.html', 
-                           categories=Config.CATEGORIES,
-                           subjects=Config.SUBJECTS)
+                           categories=app.config['CATEGORIES'],
+                           subjects=app.config['SUBJECTS'])
 
 @app.route('/admin/approve-admin-request/<int:request_id>', methods=['POST'])
 @admin_required
