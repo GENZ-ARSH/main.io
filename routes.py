@@ -4,6 +4,8 @@ from flask import render_template, request, redirect, url_for, flash, session, j
 from app import app, db
 from models import User, Book, BookRequest, AdminRequest
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SelectField, TextAreaField, SubmitField, HiddenField, validators
 from functools import wraps
 from utils import (
     pb_login, pb_register, pb_get_books, 
@@ -302,3 +304,121 @@ def toggle_theme():
 @app.context_processor
 def inject_theme():
     return dict(theme=session.get('theme', 'light'))
+
+# Secure Admin Login Form
+class SecureAdminLoginForm(FlaskForm):
+    password = PasswordField('Admin Password', [validators.DataRequired()])
+    submit = SubmitField('Authenticate')
+
+# Book Edit Form
+class BookEditForm(FlaskForm):
+    title = StringField('Title', [validators.DataRequired()])
+    author = StringField('Author', [validators.DataRequired()])
+    category = SelectField('Category', [validators.DataRequired()])
+    subject = SelectField('Subject')
+    file_url = StringField('File URL', [validators.DataRequired()])
+    cover_image = StringField('Cover Image URL')
+    file_size = StringField('File Size')
+    file_format = SelectField('File Format', choices=[
+        ('PDF', 'PDF'), ('EPUB', 'EPUB'), ('MOBI', 'MOBI'), 
+        ('DOC', 'DOC'), ('DOCX', 'DOCX'), ('ZIP', 'ZIP')
+    ])
+    tags = StringField('Tags')
+    submit = SubmitField('Save Changes')
+
+# Secure Admin Access - Enter with password
+@app.route('/secure-admin', methods=['GET', 'POST'])
+def secure_admin_login():
+    form = SecureAdminLoginForm()
+    
+    if form.validate_on_submit():
+        # Check if the admin password matches
+        admin_password = os.environ.get('ADMIN_PASSWORD', 'genz-admin-123')  # Default for development
+        
+        if form.password.data == admin_password:
+            session['secure_admin'] = True
+            flash('Secure admin access granted', 'success')
+            return redirect(url_for('admin_book_management'))
+        else:
+            flash('Invalid admin password', 'error')
+    
+    return render_template('admin_login.html', form=form)
+
+# Secure Admin Book Management
+@app.route('/secure-admin/books')
+def admin_book_management():
+    # Check if user has secure admin access
+    if not session.get('secure_admin'):
+        flash('Secure admin access required', 'error')
+        return redirect(url_for('secure_admin_login'))
+    
+    # Get search, category and sort parameters
+    search = request.args.get('search', '')
+    category = request.args.get('category', '')
+    sort = request.args.get('sort', 'title')
+    page = request.args.get('page', 1, type=int)
+    per_page = 20  # Books per page
+    
+    # Start with all books
+    query = Book.query
+    
+    # Apply search filter if provided
+    if search:
+        query = query.filter(
+            (Book.title.ilike(f'%{search}%')) | 
+            (Book.author.ilike(f'%{search}%')) |
+            (Book.tags.ilike(f'%{search}%'))
+        )
+    
+    # Apply category filter if provided
+    if category:
+        query = query.filter_by(category=category)
+    
+    # Apply sorting
+    if sort == 'title':
+        query = query.order_by(Book.title)
+    elif sort == 'author':
+        query = query.order_by(Book.author)
+    elif sort == 'downloads':
+        query = query.order_by(Book.downloads.desc())
+    elif sort == 'date':
+        query = query.order_by(Book.created_at.desc())
+    
+    # Paginate results
+    pagination = query.paginate(page=page, per_page=per_page)
+    books = pagination.items
+    
+    return render_template('admin_book_management.html', 
+                          books=books,
+                          pagination=pagination,
+                          search=search,
+                          category=category,
+                          sort=sort,
+                          categories=app.config['CATEGORIES'])
+
+# Edit Book
+@app.route('/secure-admin/books/<int:book_id>/edit', methods=['GET', 'POST'])
+def edit_book(book_id):
+    # Check if user has secure admin access
+    if not session.get('secure_admin'):
+        flash('Secure admin access required', 'error')
+        return redirect(url_for('secure_admin_login'))
+    
+    book = Book.query.get_or_404(book_id)
+    form = BookEditForm(obj=book)
+    
+    # Set up dynamic choices for category and subject
+    form.category.choices = [(c['id'], c['name']) for c in app.config['CATEGORIES']]
+    form.subject.choices = [('', '-- Select Subject --')] + [(s, s) for s in app.config['SUBJECTS']]
+    
+    if form.validate_on_submit():
+        form.populate_obj(book)
+        db.session.commit()
+        flash('Book updated successfully', 'success')
+        return redirect(url_for('admin_book_management'))
+    
+    return render_template('edit_book.html', 
+                          form=form, 
+                          book=book,
+                          categories=app.config['CATEGORIES'],
+                          subjects=app.config['SUBJECTS'])

@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Access - GEN-Z LIBRARY{% endblock %}
+
+{% block content %}
+<div class="container mx-auto flex items-center justify-center min-h-[80vh]">
+    <div class="w-full max-w-md">
+        <!-- Neon Glass Design for Admin Login -->
+        <div class="backdrop-blur-lg bg-white/10 border border-opacity-20 border-white dark:border-white/10 shadow-lg rounded-xl overflow-hidden">
+            <!-- Header with glow effect -->
+            <div class="relative p-8 bg-gradient-to-r from-indigo-600/90 to-purple-600/90 text-white">
+                <div class="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-50 blur-xl"></div>
+                <div class="relative z-10">
+                    <h1 class="text-3xl font-bold mb-2 text-shadow-glow">Admin Access</h1>
+                    <p class="opacity-90">Enter your credentials to access admin features</p>
+                </div>
+            </div>
+            
+            <div class="p-8 bg-black/30 backdrop-blur-md">
+                <form method="POST" action="{{ url_for('secure_admin_login') }}" class="space-y-6">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="space-y-2">
+                        <label for="password" class="block text-white text-sm font-medium">Admin Password</label>
+                        <div class="relative">
+                            <input type="password" id="password" name="password" required
+                                class="w-full py-3 px-4 bg-white/10 border border-white/20 focus:border-indigo-500/50 rounded-lg shadow-inner text-white placeholder-white/50 focus:ring-2 focus:ring-indigo-500/30 focus:outline-none"
+                                placeholder="Enter admin password">
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                <i class="fas fa-lock text-white/50"></i>
+                            </div>
+                        </div>
+                        <p class="text-xs text-indigo-300 mt-1">Access to advanced book management features</p>
+                    </div>
+                    
+                    <div>
+                        <button type="submit" 
+                            class="w-full relative overflow-hidden py-3 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-medium rounded-lg transition duration-300 shadow-glow-indigo">
+                            <span class="relative z-10 flex items-center justify-center">
+                                <i class="fas fa-shield-alt mr-2"></i> 
+                                Authenticate
+                            </span>
+                            <span class="absolute inset-0 bg-gradient-to-r from-indigo-600/80 to-purple-600/80 blur opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="mt-6 pt-6 border-t border-white/10 text-center">
+                    <p class="text-white/70 text-sm">
+                        <i class="fas fa-info-circle mr-2"></i> 
+                        Only authorized administrators can access this area
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add neon glow styles -->
+<style>
+    .shadow-glow-indigo {
+        box-shadow: 0 0 15px 2px rgba(79, 70, 229, 0.4);
+    }
+    
+    .text-shadow-glow {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+    }
+    
+    /* Add glass morphism and neon effects */
+    .backdrop-blur-lg {
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+    }
+    
+    .bg-black\/30 {
+        background-color: rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Neon button effect */
+    button:hover .shadow-glow-indigo {
+        box-shadow: 0 0 25px 5px rgba(79, 70, 229, 0.6);
+    }
+</style>
+{% endblock %}

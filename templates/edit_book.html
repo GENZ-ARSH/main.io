@@ -1,0 +1,321 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Book - GEN-Z LIBRARY{% endblock %}
+
+{% block content %}
+<div class="container mx-auto py-8">
+    <!-- Back Navigation -->
+    <div class="mb-6">
+        <a href="{{ url_for('admin_book_management') }}" class="inline-flex items-center text-indigo-400 hover:text-indigo-300">
+            <i class="fas fa-arrow-left mr-2"></i> 
+            Back to Book Management
+        </a>
+    </div>
+    
+    <!-- Neon Glass Card -->
+    <div class="backdrop-blur-lg bg-white/5 dark:bg-black/20 border border-white/10 rounded-xl overflow-hidden shadow-glow-purple">
+        <!-- Header -->
+        <div class="relative overflow-hidden p-8 bg-gradient-to-r from-indigo-600/90 to-purple-600/90">
+            <div class="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-50 blur-xl"></div>
+            <div class="absolute -bottom-6 -right-6 w-40 h-40 bg-purple-500 rounded-full opacity-20 blur-2xl"></div>
+            
+            <div class="relative z-10">
+                <h1 class="text-3xl font-bold mb-2 text-white text-shadow-glow">Edit Book</h1>
+                <p class="text-indigo-200">
+                    Update book information and resources
+                </p>
+            </div>
+        </div>
+        
+        <!-- Form Content -->
+        <div class="p-8 bg-black/30">
+            <form method="POST" action="{{ url_for('edit_book', book_id=book.id) }}" class="space-y-8">
+                {{ form.hidden_tag() }}
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Book Title -->
+                    <div class="space-y-2">
+                        <label for="title" class="block text-white text-sm font-medium">Title</label>
+                        <input type="text" id="title" name="title" value="{{ book.title }}" required
+                               class="w-full py-3 px-4 bg-white/10 border border-white/20 focus:border-indigo-500/50 rounded-lg shadow-inner text-white placeholder-white/50 focus:ring-2 focus:ring-indigo-500/30 focus:outline-none">
+                    </div>
+                    
+                    <!-- Author -->
+                    <div class="space-y-2">
+                        <label for="author" class="block text-white text-sm font-medium">Author</label>
+                        <input type="text" id="author" name="author" value="{{ book.author }}" required
+                               class="w-full py-3 px-4 bg-white/10 border border-white/20 focus:border-indigo-500/50 rounded-lg shadow-inner text-white placeholder-white/50 focus:ring-2 focus:ring-indigo-500/30 focus:outline-none">
+                    </div>
+                    
+                    <!-- Cover Image URL -->
+                    <div class="space-y-2">
+                        <label for="cover_image" class="block text-white text-sm font-medium">Cover Image URL</label>
+                        <input type="url" id="cover_image" name="cover_image" value="{{ book.cover_image }}"
+                               class="w-full py-3 px-4 bg-white/10 border border-white/20 focus:border-indigo-500/50 rounded-lg shadow-inner text-white placeholder-white/50 focus:ring-2 focus:ring-indigo-500/30 focus:outline-none"
+                               placeholder="https://example.com/image.jpg">
+                        <p class="text-xs text-indigo-300">URL to book cover image (optional)</p>
+                    </div>
+                    
+                    <!-- File URL -->
+                    <div class="space-y-2">
+                        <label for="file_url" class="block text-white text-sm font-medium">File URL</label>
+                        <input type="url" id="file_url" name="file_url" value="{{ book.file_url }}" required
+                               class="w-full py-3 px-4 bg-white/10 border border-white/20 focus:border-indigo-500/50 rounded-lg shadow-inner text-white placeholder-white/50 focus:ring-2 focus:ring-indigo-500/30 focus:outline-none"
+                               placeholder="https://example.com/book.pdf">
+                        <p class="text-xs text-indigo-300">URL to downloadable book file</p>
+                    </div>
+                    
+                    <!-- Category -->
+                    <div class="space-y-2">
+                        <label for="category" class="block text-white text-sm font-medium">Category</label>
+                        <select id="category" name="category" required
+                                class="w-full py-3 px-4 bg-white/10 border border-white/20 focus:border-indigo-500/50 rounded-lg shadow-inner text-white focus:ring-2 focus:ring-indigo-500/30 focus:outline-none">
+                            {% for category in categories %}
+                            <option value="{{ category.id }}" {% if book.category == category.id %}selected{% endif %}>
+                                {{ category.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- Subject -->
+                    <div class="space-y-2">
+                        <label for="subject" class="block text-white text-sm font-medium">Subject</label>
+                        <select id="subject" name="subject" 
+                                class="w-full py-3 px-4 bg-white/10 border border-white/20 focus:border-indigo-500/50 rounded-lg shadow-inner text-white focus:ring-2 focus:ring-indigo-500/30 focus:outline-none">
+                            <option value="">-- Select Subject --</option>
+                            {% for subject in subjects %}
+                            <option value="{{ subject }}" {% if book.subject == subject %}selected{% endif %}>
+                                {{ subject }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- File Size -->
+                    <div class="space-y-2">
+                        <label for="file_size" class="block text-white text-sm font-medium">File Size</label>
+                        <input type="text" id="file_size" name="file_size" value="{{ book.file_size }}"
+                               class="w-full py-3 px-4 bg-white/10 border border-white/20 focus:border-indigo-500/50 rounded-lg shadow-inner text-white placeholder-white/50 focus:ring-2 focus:ring-indigo-500/30 focus:outline-none"
+                               placeholder="e.g. 2.5 MB">
+                        <p class="text-xs text-indigo-300">Size of the file, e.g., "2.3 MB"</p>
+                    </div>
+                    
+                    <!-- File Format -->
+                    <div class="space-y-2">
+                        <label for="file_format" class="block text-white text-sm font-medium">File Format</label>
+                        <select id="file_format" name="file_format"
+                                class="w-full py-3 px-4 bg-white/10 border border-white/20 focus:border-indigo-500/50 rounded-lg shadow-inner text-white focus:ring-2 focus:ring-indigo-500/30 focus:outline-none">
+                            {% for format in ['PDF', 'EPUB', 'MOBI', 'DOC', 'DOCX', 'ZIP'] %}
+                            <option value="{{ format }}" {% if book.file_format == format %}selected{% endif %}>
+                                {{ format }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Tags -->
+                <div class="space-y-2">
+                    <label for="tags" class="block text-white text-sm font-medium">Tags</label>
+                    <input type="text" id="tags" name="tags" value="{{ book.tags }}"
+                           class="w-full py-3 px-4 bg-white/10 border border-white/20 focus:border-indigo-500/50 rounded-lg shadow-inner text-white placeholder-white/50 focus:ring-2 focus:ring-indigo-500/30 focus:outline-none"
+                           placeholder="physics, mechanics, class 11">
+                    <p class="text-xs text-indigo-300">Comma-separated list of tags</p>
+                </div>
+                
+                <!-- Preview -->
+                <div class="border border-white/10 rounded-lg p-6 bg-gradient-to-r from-indigo-900/30 to-purple-900/30">
+                    <h3 class="text-lg font-bold text-white mb-4">Book Preview</h3>
+                    <div class="flex flex-col md:flex-row items-start space-y-4 md:space-y-0 md:space-x-6">
+                        <div class="w-32 h-44 rounded-lg overflow-hidden border border-white/20 shadow-glow-sm bg-black/50 flex items-center justify-center">
+                            {% if book.cover_image %}
+                            <img id="cover-preview" src="{{ book.cover_image }}" alt="{{ book.title }}" class="w-full h-full object-cover">
+                            {% else %}
+                            <div id="cover-placeholder" class="flex flex-col items-center justify-center w-full h-full p-4">
+                                <i class="fas fa-book text-4xl text-indigo-400 mb-2"></i>
+                                <p class="text-xs text-center text-indigo-300">No cover image</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="flex-1">
+                            <div id="title-preview" class="text-xl font-bold text-white mb-1">{{ book.title }}</div>
+                            <div id="author-preview" class="text-indigo-300 mb-3">{{ book.author }}</div>
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span id="category-preview" class="px-3 py-1 text-xs rounded-full bg-gradient-to-r from-indigo-500/30 to-purple-500/30 text-white border border-white/10">
+                                    {{ book.category }}
+                                </span>
+                                <span id="subject-preview" class="px-3 py-1 text-xs rounded-full bg-black/30 border border-indigo-500/30 text-white">
+                                    {{ book.subject }}
+                                </span>
+                                <span id="format-preview" class="px-3 py-1 text-xs rounded-full bg-black/30 border border-indigo-500/30 text-white">
+                                    {{ book.file_format }}
+                                </span>
+                            </div>
+                            <div id="tags-preview" class="flex flex-wrap gap-1.5">
+                                {% for tag in book.tags.split(',') if book.tags %}
+                                <span class="px-2 py-0.5 text-xs rounded-full bg-white/10 text-indigo-300">{{ tag.strip() }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-4 pt-4 border-t border-white/10">
+                    <button type="submit" 
+                            class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-medium rounded-lg shadow-glow-indigo transition duration-300">
+                        <i class="fas fa-save mr-2"></i> 
+                        Save Changes
+                    </button>
+                    
+                    <a href="{{ url_for('admin_book_management') }}" 
+                       class="px-6 py-3 bg-black/50 hover:bg-black/70 text-white font-medium rounded-lg border border-white/10 transition duration-300">
+                        Cancel
+                    </a>
+                    
+                    <a href="{{ url_for('book_detail', book_id=book.id) }}" 
+                       class="px-6 py-3 bg-black/50 hover:bg-black/70 text-white font-medium rounded-lg border border-white/10 transition duration-300">
+                        <i class="fas fa-eye mr-2"></i>
+                        View Book
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Add neon glow styles -->
+<style>
+    /* Neon glow effects */
+    .shadow-glow-indigo {
+        box-shadow: 0 0 15px 2px rgba(79, 70, 229, 0.4);
+    }
+    
+    .shadow-glow-purple {
+        box-shadow: 0 0 15px 2px rgba(168, 85, 247, 0.4);
+    }
+    
+    .shadow-glow-sm {
+        box-shadow: 0 0 8px 1px rgba(79, 70, 229, 0.3);
+    }
+    
+    .text-shadow-glow {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+    }
+    
+    /* Add glass morphism effects */
+    .backdrop-blur-lg {
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+    }
+    
+    /* Background effects */
+    .bg-black\/30 {
+        background-color: rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Make the body dark to show neon effects better */
+    body {
+        background-color: #0f172a;
+        background-image: 
+            radial-gradient(circle at 25% 25%, rgba(79, 70, 229, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 75% 75%, rgba(168, 85, 247, 0.15) 0%, transparent 50%);
+    }
+</style>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Live preview functionality
+        const titleInput = document.getElementById('title');
+        const authorInput = document.getElementById('author');
+        const categorySelect = document.getElementById('category');
+        const subjectSelect = document.getElementById('subject');
+        const formatSelect = document.getElementById('file_format');
+        const tagsInput = document.getElementById('tags');
+        const coverInput = document.getElementById('cover_image');
+        
+        const titlePreview = document.getElementById('title-preview');
+        const authorPreview = document.getElementById('author-preview');
+        const categoryPreview = document.getElementById('category-preview');
+        const subjectPreview = document.getElementById('subject-preview');
+        const formatPreview = document.getElementById('format-preview');
+        const tagsPreview = document.getElementById('tags-preview');
+        const coverPreview = document.getElementById('cover-preview');
+        const coverPlaceholder = document.getElementById('cover-placeholder');
+        
+        // Update title
+        titleInput.addEventListener('input', function() {
+            titlePreview.textContent = this.value;
+        });
+        
+        // Update author
+        authorInput.addEventListener('input', function() {
+            authorPreview.textContent = this.value;
+        });
+        
+        // Update category
+        categorySelect.addEventListener('change', function() {
+            categoryPreview.textContent = this.options[this.selectedIndex].text;
+        });
+        
+        // Update subject
+        subjectSelect.addEventListener('change', function() {
+            subjectPreview.textContent = this.options[this.selectedIndex].text;
+        });
+        
+        // Update format
+        formatSelect.addEventListener('change', function() {
+            formatPreview.textContent = this.value;
+        });
+        
+        // Update tags
+        tagsInput.addEventListener('input', function() {
+            // Clear current tags
+            tagsPreview.innerHTML = '';
+            
+            // Add new tags
+            const tags = this.value.split(',');
+            tags.forEach(tag => {
+                if (tag.trim()) {
+                    const tagSpan = document.createElement('span');
+                    tagSpan.className = 'px-2 py-0.5 text-xs rounded-full bg-white/10 text-indigo-300';
+                    tagSpan.textContent = tag.trim();
+                    tagsPreview.appendChild(tagSpan);
+                }
+            });
+        });
+        
+        // Update cover image
+        coverInput.addEventListener('input', function() {
+            if (this.value) {
+                // Create or show the image element
+                if (!coverPreview) {
+                    const img = document.createElement('img');
+                    img.id = 'cover-preview';
+                    img.className = 'w-full h-full object-cover';
+                    img.alt = titleInput.value;
+                    
+                    if (coverPlaceholder) {
+                        coverPlaceholder.parentNode.replaceChild(img, coverPlaceholder);
+                    }
+                    coverPreview = img;
+                } else {
+                    coverPreview.style.display = 'block';
+                    if (coverPlaceholder) coverPlaceholder.style.display = 'none';
+                }
+                
+                coverPreview.src = this.value;
+            } else {
+                // Show placeholder if no image
+                if (coverPreview) coverPreview.style.display = 'none';
+                if (coverPlaceholder) coverPlaceholder.style.display = 'flex';
+            }
+        });
+    });
+</script>
+{% endblock %}
