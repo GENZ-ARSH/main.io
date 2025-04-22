@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}Request Admin Access - GEN-Z LIBRARY{% endblock %}
+
+{% block content %}
+<div class="container mx-auto">
+    <div class="max-w-2xl mx-auto">
+        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-t-lg p-6 text-white">
+            <h1 class="text-2xl font-bold">🛡️ Request Admin Access</h1>
+            <p class="opacity-90">Join the GENZ CLAN as an admin and help maintain the library</p>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 rounded-b-lg shadow-lg p-6">
+            <form method="POST" action="{{ url_for('request_admin') }}">
+                <div class="mb-6">
+                    <p class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+                        Email Address
+                    </p>
+                    <div class="bg-gray-100 dark:bg-gray-700 rounded p-3">
+                        {{ session.get('email') }}
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <label for="reason" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+                        Why do you want to become an admin? *
+                    </label>
+                    <textarea id="reason" name="reason" rows="6" required
+                              class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-indigo-500"
+                              placeholder="Explain why you want to be an admin and how you can contribute to the GENZ LIBRARY..."></textarea>
+                    <p class="text-gray-600 dark:text-gray-400 text-xs mt-1">
+                        Please provide a detailed explanation of your interest and qualifications
+                    </p>
+                </div>
+                
+                <div class="mb-6">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="terms" name="terms" required 
+                               class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                        <label for="terms" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                            I understand that being an admin comes with responsibilities and I will follow the GEN-Z LIBRARY guidelines
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline transition-colors">
+                        Submit Request
+                    </button>
+                    <a href="{{ url_for('index') }}" class="text-indigo-600 hover:text-indigo-800 font-medium">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+        
+        <div class="mt-8 bg-blue-50 dark:bg-blue-900 p-6 rounded-lg">
+            <h3 class="text-lg font-bold text-blue-800 dark:text-blue-200 mb-2">🤔 What Does an Admin Do?</h3>
+            <ul class="list-disc list-inside text-blue-700 dark:text-blue-300 space-y-2">
+                <li>Upload and manage books in the library</li>
+                <li>Approve or reject book requests</li>
+                <li>Review and approve other admin requests</li>
+                <li>Maintain the quality of the library content</li>
+                <li>Help organize books in appropriate categories</li>
+            </ul>
+            
+            <h3 class="text-lg font-bold text-blue-800 dark:text-blue-200 mt-4 mb-2">⚙️ Admin Request Process</h3>
+            <ol class="list-decimal list-inside text-blue-700 dark:text-blue-300 space-y-2">
+                <li>Submit your request with a detailed reason</li>
+                <li>Your request is sent to the super-admin (arshtyagi007@gmail.com)</li>
+                <li>The admin team reviews your application</li>
+                <li>If approved, your account role will be updated to admin</li>
+                <li>You'll receive a notification when your request is processed</li>
+            </ol>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const reasonTextarea = document.getElementById('reason');
+        const submitButton = document.querySelector('button[type="submit"]');
+        
+        reasonTextarea.addEventListener('input', function() {
+            // Simple validation - require at least 50 characters
+            if (this.value.length < 50) {
+                this.classList.add('border-yellow-500');
+                submitButton.disabled = true;
+            } else {
+                this.classList.remove('border-yellow-500');
+                submitButton.disabled = false;
+            }
+        });
+    });
+</script>
+{% endblock %}

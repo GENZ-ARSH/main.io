@@ -1,0 +1,258 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ category.name }} Books - GEN-Z LIBRARY{% endblock %}
+
+{% block content %}
+<div class="container mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg p-8">
+            <div class="max-w-4xl">
+                <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">{{ category.name }} Books</h1>
+                <p class="text-lg text-white opacity-90 mb-4">
+                    Browse our collection of {{ category.name }} books and study materials
+                </p>
+                
+                <!-- Search Form -->
+                <div class="relative max-w-xl">
+                    <form id="searchForm" action="{{ url_for('books', category=category.id) }}" method="GET" class="flex">
+                        <input type="text" name="search" id="search" placeholder="Search by title, author, or subject..." 
+                               value="{{ search }}"
+                               class="w-full py-3 px-4 pr-10 rounded-l-md focus:outline-none">
+                        <button type="submit" class="bg-indigo-800 hover:bg-indigo-900 text-white px-6 rounded-r-md">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Filters and Books -->
+    <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Filters Sidebar -->
+        <div class="lg:w-1/4">
+            <div class="card p-6 rounded-lg sticky top-24">
+                <h3 class="text-xl font-bold mb-4 border-b pb-2">Filters</h3>
+                
+                <!-- Subject Filter -->
+                <div class="mb-6">
+                    <h4 class="font-bold mb-2">Subject</h4>
+                    <div class="space-y-2">
+                        {% for subject in subjects %}
+                        <div class="flex items-center">
+                            <input type="checkbox" id="subject-{{ subject|lower }}" name="subject" value="{{ subject|lower }}" 
+                                class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                            <label for="subject-{{ subject|lower }}" class="ml-2 text-sm">{{ subject }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <!-- Tags Filter -->
+                <div class="mb-6">
+                    <h4 class="font-bold mb-2">Tags</h4>
+                    <div class="flex flex-wrap gap-2">
+                        {% set common_tags = ['textbook', 'notes', 'questions', 'solutions', 'guide', 'practice'] %}
+                        {% for tag in common_tags %}
+                        <a href="{{ url_for('books', category=category.id, tag=tag) }}" 
+                           class="text-xs px-3 py-1 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-indigo-500 hover:text-white transition-colors">
+                            {{ tag }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <!-- Format Filter -->
+                <div class="mb-6">
+                    <h4 class="font-bold mb-2">Format</h4>
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="format-pdf" name="format" value="pdf" 
+                                class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                            <label for="format-pdf" class="ml-2 text-sm">PDF</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="format-epub" name="format" value="epub" 
+                                class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                            <label for="format-epub" class="ml-2 text-sm">EPUB</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="resetFilters" class="w-full py-2 px-4 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-md text-sm font-medium transition-colors">
+                    Reset Filters
+                </button>
+            </div>
+        </div>
+        
+        <!-- Books Grid -->
+        <div class="lg:w-3/4">
+            <!-- If search or tag is active, show a notice -->
+            {% if search or tag %}
+            <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-md mb-6 flex justify-between items-center">
+                <div>
+                    <p class="text-blue-800 dark:text-blue-200">
+                        {% if search %}Showing results for "<span class="font-bold">{{ search }}</span>"{% endif %}
+                        {% if tag %}Showing books tagged "<span class="font-bold">{{ tag }}</span>"{% endif %}
+                    </p>
+                </div>
+                <a href="{{ url_for('books', category=category.id) }}" class="text-blue-600 dark:text-blue-300 hover:underline text-sm">
+                    Clear filters
+                </a>
+            </div>
+            {% endif %}
+            
+            {% if books %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for book in books %}
+                <div class="card rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow">
+                    <div class="h-48 bg-gray-200 relative">
+                        {% if book.cover_image %}
+                        <img src="{{ book.cover_image }}" alt="{{ book.title }}" class="w-full h-full object-cover">
+                        {% else %}
+                        <div class="w-full h-full flex items-center justify-center bg-indigo-100 dark:bg-indigo-900">
+                            <i class="fas fa-book text-4xl text-indigo-500"></i>
+                        </div>
+                        {% endif %}
+                        {% if book.subject %}
+                        <span class="absolute top-2 right-2 bg-indigo-600 text-white text-xs px-2 py-1 rounded-full">
+                            {{ book.subject }}
+                        </span>
+                        {% endif %}
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-bold mb-1 truncate">{{ book.title }}</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">by {{ book.author }}</p>
+                        
+                        {% if book.tags %}
+                        <div class="flex flex-wrap gap-1 mb-3">
+                            {% for tag in book.tags.split(',') %}
+                            <span class="text-xs px-2 py-0.5 bg-gray-200 dark:bg-gray-700 rounded-full">
+                                {{ tag.strip() }}
+                            </span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-xs px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded-full">{{ book.file_format }}</span>
+                                <span class="text-xs text-gray-600 dark:text-gray-400 ml-2">{{ book.file_size }}</span>
+                            </div>
+                            <span class="text-xs text-gray-600 dark:text-gray-400">
+                                <i class="fas fa-download mr-1"></i> {{ book.downloads }}
+                            </span>
+                        </div>
+                        
+                        <div class="mt-4 flex space-x-2">
+                            <a href="{{ url_for('book_detail', book_id=book.id) }}" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white text-center py-2 px-4 rounded-md text-sm font-medium transition-colors">
+                                View Details
+                            </a>
+                            <a href="{{ url_for('download_book', book_id=book.id) }}" class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 p-2 rounded-md">
+                                <i class="fas fa-download"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="card p-8 rounded-lg text-center">
+                <i class="fas fa-search text-4xl text-gray-400 mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">No books found</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">
+                    We couldn't find any books matching your criteria. Try adjusting your filters or search terms.
+                </p>
+                <a href="{{ url_for('books', category=category.id) }}" class="text-indigo-600 hover:text-indigo-800 font-medium">
+                    View all {{ category.name }} books
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Request Book CTA -->
+    <div class="mt-12 mb-8">
+        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg p-8 text-center">
+            <h2 class="text-2xl font-bold text-white mb-4">Can't find what you're looking for?</h2>
+            <p class="text-lg text-white opacity-90 mb-6">
+                Request a specific book and we'll try to add it to our library.
+            </p>
+            <a href="{{ url_for('request_book') }}" class="inline-block px-6 py-3 bg-white text-indigo-600 font-medium rounded-md shadow-md hover:bg-gray-50 transition-colors">
+                Request a Book
+            </a>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script>
+    // Filter functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const resetButton = document.getElementById('resetFilters');
+        
+        resetButton.addEventListener('click', function() {
+            // Reset all checkboxes
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            
+            // Reset search form and redirect to base category URL
+            window.location.href = "{{ url_for('books', category=category.id) }}";
+        });
+        
+        // Apply filters dynamically when checkboxes change
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                applyFilters();
+            });
+        });
+        
+        function applyFilters() {
+            let url = new URL(window.location.href);
+            let searchParams = new URLSearchParams(url.search);
+            
+            // Get all checked subjects
+            const subjects = [];
+            document.querySelectorAll('input[name="subject"]:checked').forEach(el => {
+                subjects.push(el.value);
+            });
+            
+            if (subjects.length > 0) {
+                searchParams.set('subject', subjects.join(','));
+            } else {
+                searchParams.delete('subject');
+            }
+            
+            // Get all checked formats
+            const formats = [];
+            document.querySelectorAll('input[name="format"]:checked').forEach(el => {
+                formats.push(el.value);
+            });
+            
+            if (formats.length > 0) {
+                searchParams.set('format', formats.join(','));
+            } else {
+                searchParams.delete('format');
+            }
+            
+            // Preserve search term if exists
+            const search = document.getElementById('search').value;
+            if (search) {
+                searchParams.set('search', search);
+            }
+            
+            // Preserve tag if exists
+            if (url.searchParams.has('tag')) {
+                searchParams.set('tag', url.searchParams.get('tag'));
+            }
+            
+            // Update URL
+            window.location.href = "{{ url_for('books', category=category.id) }}" + '?' + searchParams.toString();
+        }
+    });
+</script>
+{% endblock %}
+{% endblock %}

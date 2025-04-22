@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - GEN-Z LIBRARY{% endblock %}
+
+{% block content %}
+<div class="container mx-auto py-8">
+    <div class="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+        <div class="py-4 px-6 bg-indigo-600 text-white text-center">
+            <h2 class="text-2xl font-bold">Join GEN-Z LIBRARY</h2>
+            <p class="text-indigo-200">Create your free account</p>
+        </div>
+        
+        <form method="POST" action="{{ url_for('register') }}" class="py-6 px-8">
+            <div class="mb-6">
+                <label for="email" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Email Address</label>
+                <input type="email" id="email" name="email" required 
+                       class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-indigo-500"
+                       placeholder="your-email@example.com">
+                <p class="text-gray-600 dark:text-gray-400 text-xs mt-1">We'll never share your email with anyone else.</p>
+            </div>
+            
+            <div class="mb-6">
+                <label for="password" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Password</label>
+                <input type="password" id="password" name="password" required 
+                       class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-indigo-500"
+                       placeholder="••••••••">
+                <p class="text-gray-600 dark:text-gray-400 text-xs mt-1">Must be at least 8 characters long.</p>
+            </div>
+            
+            <div class="mb-6">
+                <label for="confirm" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Confirm Password</label>
+                <input type="password" id="confirm" name="confirm" required 
+                       class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-indigo-500"
+                       placeholder="••••••••">
+            </div>
+            
+            <div class="mb-6">
+                <div class="flex items-center">
+                    <input type="checkbox" id="terms" name="terms" required class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                    <label for="terms" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                        I agree to the 
+                        <a href="#" class="text-indigo-600 hover:underline dark:text-indigo-400">Terms of Service</a> 
+                        and 
+                        <a href="#" class="text-indigo-600 hover:underline dark:text-indigo-400">Privacy Policy</a>.
+                    </label>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline transition-colors">
+                    Create Account
+                </button>
+            </div>
+            
+            <p class="text-center text-gray-600 dark:text-gray-400 text-sm">
+                Already have an account? 
+                <a href="{{ url_for('login') }}" class="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium">
+                    Sign in
+                </a>
+            </p>
+        </form>
+    </div>
+    
+    <div class="mt-8 text-center">
+        <h3 class="text-lg font-bold text-gray-700 dark:text-gray-300 mb-4">Why Join GEN-Z LIBRARY?</h3>
+        <div class="flex flex-col md:flex-row justify-center gap-4 text-center">
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                <i class="fas fa-book text-indigo-600 text-2xl mb-2"></i>
+                <h4 class="font-bold mb-1">Free Resources</h4>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Access all educational materials at no cost.</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                <i class="fas fa-users text-indigo-600 text-2xl mb-2"></i>
+                <h4 class="font-bold mb-1">Join GENZ CLAN</h4>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Become part of our growing community.</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                <i class="fas fa-star text-indigo-600 text-2xl mb-2"></i>
+                <h4 class="font-bold mb-1">Special Features</h4>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Get access to advanced features and updates.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

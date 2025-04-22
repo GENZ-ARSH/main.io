@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Request a Book - GEN-Z LIBRARY{% endblock %}
+
+{% block content %}
+<div class="container mx-auto">
+    <div class="max-w-2xl mx-auto">
+        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-t-lg p-6 text-white">
+            <h1 class="text-2xl font-bold">📩 Request a Book</h1>
+            <p class="opacity-90">Can't find what you're looking for? Let us know!</p>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 rounded-b-lg shadow-lg p-6">
+            <form method="POST" action="{{ url_for('request_book') }}">
+                <div class="mb-6">
+                    <label for="book_name" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+                        Book Name *
+                    </label>
+                    <input type="text" id="book_name" name="book_name" required 
+                           class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-indigo-500"
+                           placeholder="e.g., Advanced Problems in Physics">
+                    <p class="text-gray-600 dark:text-gray-400 text-xs mt-1">Be as specific as possible with the title</p>
+                </div>
+                
+                <div class="mb-6">
+                    <label for="author_name" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+                        Author Name
+                    </label>
+                    <input type="text" id="author_name" name="author_name" 
+                           class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-indigo-500"
+                           placeholder="e.g., H.C. Verma">
+                </div>
+                
+                <div class="mb-6">
+                    <p class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+                        Requested By
+                    </p>
+                    <div class="bg-gray-100 dark:bg-gray-700 rounded p-3">
+                        {{ session.get('email') }}
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <label for="additional_info" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+                        Additional Information
+                    </label>
+                    <textarea id="additional_info" name="additional_info" rows="4"
+                              class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-indigo-500"
+                              placeholder="Any additional details about the book or why you need it..."></textarea>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline transition-colors">
+                        Submit Request
+                    </button>
+                    <a href="{{ url_for('index') }}" class="text-indigo-600 hover:text-indigo-800 font-medium">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+        
+        <div class="mt-8 bg-blue-50 dark:bg-blue-900 p-6 rounded-lg">
+            <h3 class="text-lg font-bold text-blue-800 dark:text-blue-200 mb-2">🤔 How Book Requests Work</h3>
+            <ul class="list-disc list-inside text-blue-700 dark:text-blue-300 space-y-2">
+                <li>Our admin team reviews all book requests</li>
+                <li>We'll try to find the book and add it to the library</li>
+                <li>No guarantee that we can find every book</li>
+                <li>Your email may be used to notify you when the book is available</li>
+                <li>Please only request educational materials</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

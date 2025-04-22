@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}Upload Book - GEN-Z LIBRARY{% endblock %}
+
+{% block content %}
+<div class="container mx-auto">
+    <div class="max-w-3xl mx-auto bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+        <div class="py-4 px-6 bg-indigo-600 text-white">
+            <h2 class="text-2xl font-bold">Upload New Book</h2>
+            <p class="text-indigo-200">Add a new resource to the GEN-Z LIBRARY</p>
+        </div>
+        
+        <form method="POST" action="{{ url_for('upload_book') }}" class="py-6 px-8" enctype="multipart/form-data">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label for="title" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+                        Book Title *
+                    </label>
+                    <input type="text" id="title" name="title" required 
+                           class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-indigo-500"
+                           placeholder="e.g., Physics NCERT for Class 12">
+                </div>
+                
+                <div>
+                    <label for="author" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+                        Author *
+                    </label>
+                    <input type="text" id="author" name="author" required 
+                           class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-indigo-500"
+                           placeholder="e.g., NCERT">
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label for="category" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+                        Category *
+                    </label>
+                    <select id="category" name="category" required
+                            class="shadow border rounded w-full py-3 px-4 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-indigo-500">
+                        <option value="">Select a category</option>
+                        {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="subject" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+                        Subject
+                    </label>
+                    <select id="subject" name="subject"
+                            class="shadow border rounded w-full py-3 px-4 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-indigo-500">
+                        <option value="">Select a subject</option>
+                        {% for subject in subjects %}
+                        <option value="{{ subject }}">{{ subject }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <label for="tags" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+                    Tags (comma separated)
+                </label>
+                <input type="text" id="tags" name="tags" 
+                       class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-indigo-500"
+                       placeholder="e.g., physics, ncert, class-12, textbook">
+                <p class="text-gray-600 dark:text-gray-400 text-xs mt-1">Add relevant tags to help users find this book</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label for="file_size" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+                        File Size
+                    </label>
+                    <input type="text" id="file_size" name="file_size" 
+                           class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-indigo-500"
+                           placeholder="e.g., 5.2 MB">
+                </div>
+                
+                <div>
+                    <label for="file_format" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+                        File Format
+                    </label>
+                    <select id="file_format" name="file_format"
+                            class="shadow border rounded w-full py-3 px-4 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-indigo-500">
+                        <option value="PDF">PDF</option>
+                        <option value="EPUB">EPUB</option>
+                        <option value="MOBI">MOBI</option>
+                        <option value="DOC">DOC</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <label for="cover_image" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+                    Cover Image URL
+                </label>
+                <input type="url" id="cover_image" name="cover_image" 
+                       class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-indigo-500"
+                       placeholder="https://example.com/image.jpg">
+                <p class="text-gray-600 dark:text-gray-400 text-xs mt-1">Enter URL for the book cover image</p>
+            </div>
+            
+            <div class="mb-6">
+                <label for="file_url" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+                    File URL *
+                </label>
+                <input type="url" id="file_url" name="file_url" required
+                       class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 dark:text-gray-300 dark:bg-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-indigo-500"
+                       placeholder="https://example.com/book.pdf">
+                <p class="text-gray-600 dark:text-gray-400 text-xs mt-1">Enter URL for the book file (from PocketBase)</p>
+            </div>
+            
+            <div class="flex items-center justify-between">
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline transition-colors">
+                    Upload Book
+                </button>
+                <a href="{{ url_for('admin_dashboard') }}" class="text-indigo-600 hover:text-indigo-800 font-medium">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+    
+    <div class="mt-8 text-center">
+        <p class="text-gray-600 dark:text-gray-400 text-sm">
+            Make sure you have the rights to share this content before uploading.
+        </p>
+    </div>
+</div>
+{% endblock %}
