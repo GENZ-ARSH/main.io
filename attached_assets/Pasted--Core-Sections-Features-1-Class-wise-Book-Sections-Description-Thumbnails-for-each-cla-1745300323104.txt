@@ -1,0 +1,187 @@
+🚀 Core Sections & Features
+1. 📚 Class-wise Book Sections
+
+    Description: Thumbnails for each class (9th, 10th, 11th, 12th) and exams (JEE, NEET, NDA).
+
+    Function: When clicked, it shows all related books.
+
+    User Role: Anyone can browse.
+
+2. 🔍 Search & Filter
+
+    Search Bar: Users can search by title, author, tags.
+
+    Filters: Filter books by exam type, class, subject, tags.
+
+    Live Results: Real-time filtering without reloading.
+
+3. 🌗 Dark/Light Mode Toggle
+
+    Toggle Button: Sun 🌞 / Moon 🌙 icon.
+
+    Memory: Saves choice via localStorage.
+
+4. 📥 Book Upload (Admin Only)
+
+    Admins can upload:
+
+        Book Title
+
+        Author
+
+        Cover Image
+
+        PDF File
+
+        File Size
+
+        Format
+
+        Tags (e.g., Physics, NCERT, JEE)
+
+    Download count increases per click.
+
+5. 🧑‍💼 Admin Panel
+
+    Login Protected (Email + Password from PocketBase)
+
+    Full Book Management: Add / Edit / Delete books.
+
+    Admin Dashboard with analytics (coming soon).
+
+    Uses role field in PocketBase (user or admin).
+
+6. 📬 Book Request Form (User)
+
+    Fields: Book Name + Author + Email.
+
+    Stored in DB (PocketBase collection bookRequests).
+
+    You can review and respond manually.
+
+7. 🛡️ Admin Request System
+
+    User clicks “Become Admin” button.
+
+    Form with:
+
+        Email
+
+        Reason
+
+    On submit:
+
+        Saved to adminRequests collection.
+
+        You (at arshtyagi007@gmail.com) receive notification or check PocketBase.
+
+        You approve/reject and assign admin role.
+
+8. 🔢 Download Count + File Info
+
+    Visible on book cards:
+
+        Format (e.g., PDF)
+
+        File Size (e.g., 2.3 MB)
+
+        Total Downloads
+
+9. 🔐 Secure Login/Signup
+
+    Powered by PocketBase Auth
+
+    Users can sign up using email/password
+
+    Role-based access: only admins get book control panel
+
+🧠 Advanced/Bonus Sections
+10. 🧑‍🔧 GENZ BROZ Dashboard
+
+    Internal team management section.
+
+    Features:
+
+        Member profiles
+
+        Task assignment
+
+        Progress bars
+
+        Badge system
+
+        Leaderboard
+
+11. 🎓 Free Course Batches
+
+    Add sections for:
+
+        PW (Physics Wallah)
+
+        Unacademy
+
+        Next Topper
+
+    Batches include:
+
+        Subject
+
+        Year
+
+        YouTube/Drive Links
+
+        Downloadable PDFs
+
+12. 💬 Comment/Chat (Planned)
+
+    Users can comment under books.
+
+    Admin can reply (can integrate later using PocketBase).
+
+13. 🧞 AI Book Recommender (Future)
+
+    Suggests books based on:
+
+        Previous downloads
+
+        Tag interest
+
+        Search history
+
+14. 🧾 Leaderboard for Contributors
+
+    Who uploaded most books
+
+    Who got most downloads
+
+    Admin-managed badge system
+
+15. 🎨 Custom Theme System
+
+    Users can choose themes:
+
+        Default (GENZ Theme)
+
+        Neon / Night / Minimal / Old-school
+
+💾 Backend (PocketBase) Collections Overview
+
+📁 books
+- title, author, coverImage, file, size, format, tags, downloads
+
+📁 users
+- email, password, role ['user', 'admin'], approved
+
+📁 bookRequests
+- bookName, authorName, userEmail
+
+📁 adminRequests
+- email, reason, status ['pending', 'approved', 'rejected']
+
+🔧 Utility Features
+Feature	Description
+✅ LocalStorage	Stores dark mode, theme, etc.
+✅ Real-time Sync	Book list updates instantly.
+✅ Responsive UI	Mobile + Desktop optimized.
+✅ Animated UI	Cards, buttons, banners.
+✅ No SPA	Full-blown multi-page app.
