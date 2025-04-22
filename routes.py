@@ -444,13 +444,11 @@ def secure_admin_login():
     form = SecureAdminLoginForm()
     
     if form.validate_on_submit():
-        # Check if the admin password matches the GENZCLANX code
-        admin_password = 'GENZCLANX'  # Special code for GENZ admins
-        
-        if form.password.data == admin_password:
+        if form.password.data == 'GENZCLANX':
             session['secure_admin'] = True
-            flash('⚡ GENZ Power Unlocked! Secure admin access granted', 'success')
-            return redirect(url_for('admin_book_management'))
+            session['admin_access_time'] = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
+            flash('⚡ GENZ Power Unlocked! Welcome to Admin Console', 'success')
+            return redirect(url_for('admin_dashboard'))
         else:
             flash('⛔ Access denied. Invalid GENZ code.', 'error')
     

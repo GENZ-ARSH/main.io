@@ -63,6 +63,30 @@ class AdminRequest(db.Model):
     
     def __repr__(self):
         return f'<AdminRequest {self.email}>'
+
+class AdminActivity(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    admin_email = db.Column(db.String(120), nullable=False)
+    action = db.Column(db.String(100), nullable=False)
+    details = db.Column(db.Text)
+    ip_address = db.Column(db.String(45))
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+class DownloadStats(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    download_date = db.Column(db.DateTime, default=datetime.utcnow)
+    ip_address = db.Column(db.String(45))
+    user_agent = db.Column(db.String(200))
+
+class AdminNotification(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    priority = db.Column(db.String(20), default='normal')  # low, normal, high, urgent
+    status = db.Column(db.String(20), default='unread')  # unread, read
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 class SearchAnalytics(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     search_term = db.Column(db.String(200), nullable=False)
