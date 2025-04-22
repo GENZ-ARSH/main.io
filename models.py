@@ -2,6 +2,18 @@ from app import db
 from flask_login import UserMixin
 from datetime import datetime
 
+
+class Announcement(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    image_url = db.Column(db.String(500))  # Optional image/banner URL
+    post_date = db.Column(db.DateTime, default=datetime.utcnow)
+    created_by = db.Column(db.String(120))  # Email of the admin who created it
+    
+    def __repr__(self):
+        return f'<Announcement {self.title}>'
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)

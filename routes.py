@@ -2,7 +2,7 @@ import os
 import json
 from flask import render_template, request, redirect, url_for, flash, session, jsonify, send_file, current_app
 from app import app, db
-from models import User, Book, BookRequest, AdminRequest
+from models import User, Book, BookRequest, AdminRequest, Announcement
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SelectField, TextAreaField, SubmitField, HiddenField, validators
@@ -40,9 +40,11 @@ def admin_required(f):
 def index():
     categories = app.config['CATEGORIES']
     featured_books = Book.query.order_by(Book.downloads.desc()).limit(8).all()
+    announcements = Announcement.query.order_by(Announcement.post_date.desc()).limit(3).all()
     return render_template('index.html', 
                            categories=categories, 
-                           featured_books=featured_books)
+                           featured_books=featured_books,
+                           announcements=announcements)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -294,6 +296,52 @@ def profile():
     user = User.query.get(session['user_id'])
     return render_template('profile.html', user=user)
 
+@app.route('/announcements')
+def announcements():
+    announcements_list = Announcement.query.order_by(Announcement.post_date.desc()).all()
+    return render_template('announcements.html', announcements=announcements_list)
+
+@app.route('/announcements/<int:announcement_id>')
+def announcement_detail(announcement_id):
+    announcement = Announcement.query.get_or_404(announcement_id)
+    return render_template('announcement_detail.html', announcement=announcement)
+
+@app.route('/post-announcement', methods=['GET', 'POST'])
+def post_announcement():
+    form = AnnouncementForm()
+    
+    if form.validate_on_submit():
+        # Check the secret code
+        if form.secret_code.data != 'GENZCLANX':
+            flash('Invalid secret code. Access denied.', 'error')
+            return render_template('post_announcement.html', form=form)
+        
+        # Create a new announcement
+        announcement = Announcement(
+            title=form.title.data,
+            description=form.description.data,
+            image_url=form.image_url.data if form.image_url.data else None,
+            created_by=session.get('email', 'Anonymous')
+        )
+        
+        db.session.add(announcement)
+        db.session.commit()
+        
+        flash('Announcement posted successfully!', 'success')
+        return redirect(url_for('announcements'))
+    
+    return render_template('post_announcement.html', form=form)
+
+@app.route('/delete-announcement/<int:announcement_id>', methods=['POST'])
+@admin_required
+def delete_announcement(announcement_id):
+    announcement = Announcement.query.get_or_404(announcement_id)
+    db.session.delete(announcement)
+    db.session.commit()
+    
+    flash('Announcement deleted successfully', 'success')
+    return redirect(url_for('announcements'))
+
 @app.route('/toggle-theme', methods=['POST'])
 def toggle_theme():
     current_theme = session.get('theme', 'light')
@@ -325,6 +373,14 @@ class BookEditForm(FlaskForm):
     ])
     tags = StringField('Tags')
     submit = SubmitField('Save Changes')
+
+# Announcement Form
+class AnnouncementForm(FlaskForm):
+    title = StringField('Announcement Title', [validators.DataRequired(), validators.Length(min=5, max=200)])
+    description = TextAreaField('Description', [validators.DataRequired()])
+    image_url = StringField('Image URL (Optional)', [validators.Optional(), validators.URL()])
+    secret_code = PasswordField('Secret Code', [validators.DataRequired()]) 
+    submit = SubmitField('Post Announcement')
 
 # Secure Admin Access - Enter with password
 @app.route('/secure-admin', methods=['GET', 'POST'])

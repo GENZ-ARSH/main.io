@@ -119,6 +119,9 @@
                     {% endfor %}
                 </div>
             </div>
+            <a href="{{ url_for('announcements') }}" class="hover:text-indigo-600 transition-colors flex items-center">
+                <i class="fas fa-bullhorn mr-2 text-indigo-500"></i>Announcements
+            </a>
             <a href="{{ url_for('request_book') }}" class="hover:text-indigo-600 transition-colors">Request Book</a>
         </div>
         
@@ -165,6 +168,9 @@
             {% for category in config['CATEGORIES'] %}
             <a href="{{ url_for('books', category=category.id) }}" class="hover:text-indigo-600 transition-colors">{{ category.name }}</a>
             {% endfor %}
+            <a href="{{ url_for('announcements') }}" class="hover:text-indigo-600 transition-colors flex items-center">
+                <i class="fas fa-bullhorn mr-2 text-indigo-500"></i>Announcements
+            </a>
             <a href="{{ url_for('request_book') }}" class="hover:text-indigo-600 transition-colors">Request Book</a>
         </div>
     </div>
@@ -222,7 +228,7 @@
                 </div>
             </div>
             <div class="border-t border-gray-300 dark:border-gray-700 mt-8 pt-4 text-center">
-                <p class="text-sm">&copy; 2023 GEN-Z LIBRARY. Built with ❤️ for the new wave of students.</p>
+                <p class="text-sm">&copy; 2023 GEN-Z LIBRARY. Made with ❤️ by GENZ-ARSH.</p>
             </div>
         </div>
     </footer>
