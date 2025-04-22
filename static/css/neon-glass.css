@@ -1,0 +1,203 @@
+/* Neon Glass Design System for GEN-Z LIBRARY */
+
+/* Core Neon Glow Effects */
+.shadow-glow-indigo {
+    box-shadow: 0 0 15px 2px rgba(79, 70, 229, 0.4);
+}
+
+.shadow-glow-purple {
+    box-shadow: 0 0 15px 2px rgba(168, 85, 247, 0.4);
+}
+
+.shadow-glow-blue {
+    box-shadow: 0 0 15px 2px rgba(59, 130, 246, 0.4);
+}
+
+.shadow-glow-cyan {
+    box-shadow: 0 0 15px 2px rgba(34, 211, 238, 0.4);
+}
+
+.shadow-glow-pink {
+    box-shadow: 0 0 15px 2px rgba(236, 72, 153, 0.4);
+}
+
+.shadow-glow-sm {
+    box-shadow: 0 0 8px 1px rgba(79, 70, 229, 0.3);
+}
+
+.text-shadow-glow {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+}
+
+/* Glass Morphism Effects */
+.backdrop-blur-lg {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.backdrop-blur-md {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+/* Background effects */
+.bg-black\/30 {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.bg-black\/20 {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.bg-white\/10 {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.bg-white\/5 {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Border Effects */
+.border-white\/10 {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.border-white\/20 {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.border-indigo-500\/30 {
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+/* Background Gradients */
+.bg-gradient-radial {
+    background-image: radial-gradient(circle at center, var(--tw-gradient-from) 0%, var(--tw-gradient-to) 100%);
+}
+
+/* Hover Effects */
+.hover\:shadow-glow-lg:hover {
+    box-shadow: 0 0 25px 5px rgba(79, 70, 229, 0.6);
+}
+
+.hover\:bg-indigo-900\/30:hover {
+    background-color: rgba(49, 46, 129, 0.3);
+}
+
+/* Animation Effects */
+.animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 10px -5px rgba(79, 70, 229, 0.5);
+    }
+    to {
+        box-shadow: 0 0 20px 5px rgba(79, 70, 229, 0.7);
+    }
+}
+
+/* Neon Text */
+.neon-text {
+    color: #fff;
+    text-shadow: 
+        0 0 5px rgba(255, 255, 255, 0.8),
+        0 0 10px rgba(79, 70, 229, 0.8),
+        0 0 15px rgba(79, 70, 229, 0.6),
+        0 0 20px rgba(79, 70, 229, 0.4);
+}
+
+.neon-text-indigo {
+    color: #fff;
+    text-shadow: 
+        0 0 5px rgba(255, 255, 255, 0.8),
+        0 0 10px rgba(79, 70, 229, 0.8),
+        0 0 15px rgba(79, 70, 229, 0.6),
+        0 0 20px rgba(79, 70, 229, 0.4);
+}
+
+.neon-text-purple {
+    color: #fff;
+    text-shadow: 
+        0 0 5px rgba(255, 255, 255, 0.8),
+        0 0 10px rgba(168, 85, 247, 0.8),
+        0 0 15px rgba(168, 85, 247, 0.6),
+        0 0 20px rgba(168, 85, 247, 0.4);
+}
+
+.neon-text-cyan {
+    color: #fff;
+    text-shadow: 
+        0 0 5px rgba(255, 255, 255, 0.8),
+        0 0 10px rgba(34, 211, 238, 0.8),
+        0 0 15px rgba(34, 211, 238, 0.6),
+        0 0 20px rgba(34, 211, 238, 0.4);
+}
+
+/* Neon Button */
+.neon-btn {
+    position: relative;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    border: 1px solid rgba(79, 70, 229, 0.5);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.neon-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        45deg, 
+        rgba(79, 70, 229, 0) 0%, 
+        rgba(79, 70, 229, 0.8) 50%, 
+        rgba(79, 70, 229, 0) 100%
+    );
+    transform: translateX(-100%) skewX(-15deg);
+    transition: transform 0.5s ease;
+}
+
+.neon-btn:hover {
+    box-shadow: 0 0 15px rgba(79, 70, 229, 0.8);
+}
+
+.neon-btn:hover::before {
+    transform: translateX(100%) skewX(-15deg);
+}
+
+/* Glass Card */
+.glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(79, 70, 229, 0.3);
+}
+
+/* Dark Background for Neon Effects */
+.neon-dark-bg {
+    background-color: #0f172a;
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(79, 70, 229, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(168, 85, 247, 0.15) 0%, transparent 50%);
+}

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Secure Admin - GEN-Z LIBRARY{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/neon-glass.css') }}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0f172a;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(79, 70, 229, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(168, 85, 247, 0.15) 0%, transparent 50%);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        /* Glowing border animation */
+        .glow-border {
+            position: relative;
+        }
+        
+        .glow-border::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            background: linear-gradient(90deg, #4f46e5, #a855f7, #06b6d4, #4f46e5);
+            border-radius: inherit;
+            z-index: -1;
+            animation: animateBorder 4s linear infinite;
+            background-size: 400% 400%;
+        }
+        
+        @keyframes animateBorder {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #4f46e5, #a855f7);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #4338ca, #9333ea);
+        }
+    </style>
+    {% block additional_styles %}{% endblock %}
+</head>
+<body>
+    <!-- Secure Admin Navbar -->
+    <nav class="sticky top-0 z-50 backdrop-blur-lg bg-black/30 border-b border-white/10 shadow-glow-indigo">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <!-- Logo and Title -->
+                <div class="flex items-center space-x-3">
+                    <a href="{{ url_for('admin_book_management') }}" class="flex items-center">
+                        <div class="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center shadow-glow-indigo">
+                            <i class="fas fa-shield-alt text-white text-lg"></i>
+                        </div>
+                        <div class="ml-3">
+                            <h1 class="font-bold text-xl neon-text-indigo">SECURE ADMIN</h1>
+                            <div class="text-xs text-indigo-300">GEN-Z LIBRARY</div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="{{ url_for('admin_book_management') }}" class="flex items-center text-white hover:text-indigo-300 transition-colors duration-300 {% if request.endpoint == 'admin_book_management' %}text-indigo-400{% endif %}">
+                        <i class="fas fa-books mr-2"></i> Book Management
+                    </a>
+                    <a href="{{ url_for('upload_book') }}" class="flex items-center text-white hover:text-indigo-300 transition-colors duration-300 {% if request.endpoint == 'upload_book' %}text-indigo-400{% endif %}">
+                        <i class="fas fa-upload mr-2"></i> Upload Book
+                    </a>
+                    <a href="{{ url_for('admin_dashboard') }}" class="flex items-center text-white hover:text-indigo-300 transition-colors duration-300">
+                        <i class="fas fa-chart-pie mr-2"></i> Dashboard
+                    </a>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="flex items-center space-x-4">
+                    <a href="{{ url_for('index') }}" class="text-white hover:text-indigo-300 transition-colors duration-300">
+                        <i class="fas fa-home"></i>
+                        <span class="ml-2 hidden md:inline">Back to Home</span>
+                    </a>
+                    
+                    <div class="relative group">
+                        <button class="neon-btn flex items-center space-x-2 py-1.5 px-3">
+                            <i class="fas fa-user-shield text-indigo-400"></i>
+                            <span class="hidden md:inline">Admin</span>
+                            <i class="fas fa-chevron-down text-xs ml-1"></i>
+                        </button>
+                        <div class="absolute right-0 mt-2 w-48 backdrop-blur-lg bg-black/40 border border-white/10 rounded-lg shadow-glow-indigo overflow-hidden z-20 hidden group-hover:block">
+                            <a href="{{ url_for('logout') }}" class="block p-3 text-sm hover:bg-indigo-600/20 transition-colors">
+                                <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="fixed top-20 right-4 z-50">
+                {% for category, message in messages %}
+                    <div class="flash-message p-4 mb-4 rounded-md backdrop-blur-md {% if category == 'error' %}bg-red-500/80 shadow-glow-pink{% else %}bg-emerald-500/80 shadow-glow-blue{% endif %} text-white">
+                        <div class="flex items-start">
+                            {% if category == 'error' %}
+                                <i class="fas fa-exclamation-circle text-xl mr-3 mt-0.5"></i>
+                            {% else %}
+                                <i class="fas fa-check-circle text-xl mr-3 mt-0.5"></i>
+                            {% endif %}
+                            <div>
+                                <p class="font-bold">{{ 'Error' if category == 'error' else 'Success' }}</p>
+                                <p>{{ message }}</p>
+                            </div>
+                        </div>
+                        <button class="absolute top-2 right-2 text-white/80 hover:text-white focus:outline-none" onclick="this.parentElement.remove()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6">
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Admin Footer -->
+    <footer class="mt-12 backdrop-blur-lg bg-black/20 border-t border-white/10 py-4">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p class="text-indigo-300 text-sm">
+                        <i class="fas fa-shield-alt mr-2"></i> Secure Admin Area - GEN-Z LIBRARY
+                    </p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="{{ url_for('index') }}" class="text-indigo-300 hover:text-white transition-colors">
+                        <i class="fas fa-home mr-1"></i> Home
+                    </a>
+                    <a href="{{ url_for('admin_dashboard') }}" class="text-indigo-300 hover:text-white transition-colors">
+                        <i class="fas fa-tachometer-alt mr-1"></i> Dashboard
+                    </a>
+                    <a href="{{ url_for('logout') }}" class="text-indigo-300 hover:text-white transition-colors">
+                        <i class="fas fa-sign-out-alt mr-1"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Base JavaScript -->
+    <script>
+        // Auto-hide flash messages
+        setTimeout(() => {
+            const flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(msg => {
+                msg.remove();
+            });
+        }, 5000);
+        
+        // Add active state to navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('nav a');
+            
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('text-indigo-400');
+                }
+            });
+        });
+    </script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>

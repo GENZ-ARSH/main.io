@@ -1,320 +1,326 @@
-{% extends 'base.html' %}
+{% extends 'secure_admin_base.html' %}
 
-{% block title %}Edit Book - GEN-Z LIBRARY{% endblock %}
+{% block title %}Edit Book - Secure Admin{% endblock %}
+
+{% block additional_styles %}
+<style>
+    /* Form styles */
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .form-input {
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .form-input:focus {
+        outline: none;
+        border-color: rgba(79, 70, 229, 0.5);
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25);
+    }
+    
+    .form-input::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+    }
+    
+    .form-hint {
+        display: block;
+        margin-top: 0.5rem;
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .form-error {
+        display: block;
+        margin-top: 0.5rem;
+        font-size: 0.75rem;
+        color: #f87171;
+    }
+    
+    /* Two column layout */
+    @media (min-width: 768px) {
+        .form-2-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container mx-auto py-8">
-    <!-- Back Navigation -->
-    <div class="mb-6">
-        <a href="{{ url_for('admin_book_management') }}" class="inline-flex items-center text-indigo-400 hover:text-indigo-300">
-            <i class="fas fa-arrow-left mr-2"></i> 
-            Back to Book Management
-        </a>
+<div class="flex items-center mb-6">
+    <a href="{{ url_for('admin_book_management') }}" class="flex items-center text-indigo-400 hover:text-indigo-300 transition-colors mr-4">
+        <i class="fas fa-arrow-left mr-2"></i> Back to Books
+    </a>
+    <h1 class="text-3xl font-bold neon-text-indigo">{{ 'Edit' if book else 'Add New' }} Book</h1>
+</div>
+
+<!-- Book Edit Form -->
+<div class="glass-card overflow-hidden">
+    <div class="p-4 border-b border-white/10 bg-gradient-to-r from-indigo-900/30 to-purple-900/30">
+        <h2 class="text-xl font-bold text-white">Book Information</h2>
     </div>
     
-    <!-- Neon Glass Card -->
-    <div class="backdrop-blur-lg bg-white/5 dark:bg-black/20 border border-white/10 rounded-xl overflow-hidden shadow-glow-purple">
-        <!-- Header -->
-        <div class="relative overflow-hidden p-8 bg-gradient-to-r from-indigo-600/90 to-purple-600/90">
-            <div class="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-50 blur-xl"></div>
-            <div class="absolute -bottom-6 -right-6 w-40 h-40 bg-purple-500 rounded-full opacity-20 blur-2xl"></div>
+    <div class="p-6">
+        <form method="POST" class="space-y-6">
+            {{ form.hidden_tag() }}
             
-            <div class="relative z-10">
-                <h1 class="text-3xl font-bold mb-2 text-white text-shadow-glow">Edit Book</h1>
-                <p class="text-indigo-200">
-                    Update book information and resources
-                </p>
+            <!-- Basic Info Section -->
+            <div class="bg-black/10 backdrop-blur-sm p-5 rounded-lg border border-white/5 mb-6">
+                <h3 class="text-lg font-semibold text-indigo-300 mb-4">Basic Information</h3>
+                
+                <div class="form-2-columns">
+                    <div class="form-group">
+                        <label for="title" class="form-label">Book Title *</label>
+                        {{ form.title(class="form-input", placeholder="Enter book title") }}
+                        {% if form.title.errors %}
+                        <span class="form-error">{{ form.title.errors[0] }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="author" class="form-label">Author *</label>
+                        {{ form.author(class="form-input", placeholder="Enter author name") }}
+                        {% if form.author.errors %}
+                        <span class="form-error">{{ form.author.errors[0] }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="form-2-columns">
+                    <div class="form-group">
+                        <label for="category" class="form-label">Category *</label>
+                        {{ form.category(class="form-input") }}
+                        {% if form.category.errors %}
+                        <span class="form-error">{{ form.category.errors[0] }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject" class="form-label">Subject</label>
+                        {{ form.subject(class="form-input") }}
+                        {% if form.subject.errors %}
+                        <span class="form-error">{{ form.subject.errors[0] }}</span>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-        </div>
-        
-        <!-- Form Content -->
-        <div class="p-8 bg-black/30">
-            <form method="POST" action="{{ url_for('edit_book', book_id=book.id) }}" class="space-y-8">
-                {{ form.hidden_tag() }}
+            
+            <!-- File Info Section -->
+            <div class="bg-black/10 backdrop-blur-sm p-5 rounded-lg border border-white/5 mb-6">
+                <h3 class="text-lg font-semibold text-indigo-300 mb-4">File Information</h3>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Book Title -->
-                    <div class="space-y-2">
-                        <label for="title" class="block text-white text-sm font-medium">Title</label>
-                        <input type="text" id="title" name="title" value="{{ book.title }}" required
-                               class="w-full py-3 px-4 bg-white/10 border border-white/20 focus:border-indigo-500/50 rounded-lg shadow-inner text-white placeholder-white/50 focus:ring-2 focus:ring-indigo-500/30 focus:outline-none">
-                    </div>
-                    
-                    <!-- Author -->
-                    <div class="space-y-2">
-                        <label for="author" class="block text-white text-sm font-medium">Author</label>
-                        <input type="text" id="author" name="author" value="{{ book.author }}" required
-                               class="w-full py-3 px-4 bg-white/10 border border-white/20 focus:border-indigo-500/50 rounded-lg shadow-inner text-white placeholder-white/50 focus:ring-2 focus:ring-indigo-500/30 focus:outline-none">
-                    </div>
-                    
-                    <!-- Cover Image URL -->
-                    <div class="space-y-2">
-                        <label for="cover_image" class="block text-white text-sm font-medium">Cover Image URL</label>
-                        <input type="url" id="cover_image" name="cover_image" value="{{ book.cover_image }}"
-                               class="w-full py-3 px-4 bg-white/10 border border-white/20 focus:border-indigo-500/50 rounded-lg shadow-inner text-white placeholder-white/50 focus:ring-2 focus:ring-indigo-500/30 focus:outline-none"
-                               placeholder="https://example.com/image.jpg">
-                        <p class="text-xs text-indigo-300">URL to book cover image (optional)</p>
-                    </div>
-                    
-                    <!-- File URL -->
-                    <div class="space-y-2">
-                        <label for="file_url" class="block text-white text-sm font-medium">File URL</label>
-                        <input type="url" id="file_url" name="file_url" value="{{ book.file_url }}" required
-                               class="w-full py-3 px-4 bg-white/10 border border-white/20 focus:border-indigo-500/50 rounded-lg shadow-inner text-white placeholder-white/50 focus:ring-2 focus:ring-indigo-500/30 focus:outline-none"
-                               placeholder="https://example.com/book.pdf">
-                        <p class="text-xs text-indigo-300">URL to downloadable book file</p>
-                    </div>
-                    
-                    <!-- Category -->
-                    <div class="space-y-2">
-                        <label for="category" class="block text-white text-sm font-medium">Category</label>
-                        <select id="category" name="category" required
-                                class="w-full py-3 px-4 bg-white/10 border border-white/20 focus:border-indigo-500/50 rounded-lg shadow-inner text-white focus:ring-2 focus:ring-indigo-500/30 focus:outline-none">
-                            {% for category in categories %}
-                            <option value="{{ category.id }}" {% if book.category == category.id %}selected{% endif %}>
-                                {{ category.name }}
-                            </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    
-                    <!-- Subject -->
-                    <div class="space-y-2">
-                        <label for="subject" class="block text-white text-sm font-medium">Subject</label>
-                        <select id="subject" name="subject" 
-                                class="w-full py-3 px-4 bg-white/10 border border-white/20 focus:border-indigo-500/50 rounded-lg shadow-inner text-white focus:ring-2 focus:ring-indigo-500/30 focus:outline-none">
-                            <option value="">-- Select Subject --</option>
-                            {% for subject in subjects %}
-                            <option value="{{ subject }}" {% if book.subject == subject %}selected{% endif %}>
-                                {{ subject }}
-                            </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    
-                    <!-- File Size -->
-                    <div class="space-y-2">
-                        <label for="file_size" class="block text-white text-sm font-medium">File Size</label>
-                        <input type="text" id="file_size" name="file_size" value="{{ book.file_size }}"
-                               class="w-full py-3 px-4 bg-white/10 border border-white/20 focus:border-indigo-500/50 rounded-lg shadow-inner text-white placeholder-white/50 focus:ring-2 focus:ring-indigo-500/30 focus:outline-none"
-                               placeholder="e.g. 2.5 MB">
-                        <p class="text-xs text-indigo-300">Size of the file, e.g., "2.3 MB"</p>
-                    </div>
-                    
-                    <!-- File Format -->
-                    <div class="space-y-2">
-                        <label for="file_format" class="block text-white text-sm font-medium">File Format</label>
-                        <select id="file_format" name="file_format"
-                                class="w-full py-3 px-4 bg-white/10 border border-white/20 focus:border-indigo-500/50 rounded-lg shadow-inner text-white focus:ring-2 focus:ring-indigo-500/30 focus:outline-none">
-                            {% for format in ['PDF', 'EPUB', 'MOBI', 'DOC', 'DOCX', 'ZIP'] %}
-                            <option value="{{ format }}" {% if book.file_format == format %}selected{% endif %}>
-                                {{ format }}
-                            </option>
-                            {% endfor %}
-                        </select>
-                    </div>
+                <div class="form-group">
+                    <label for="file_url" class="form-label">File URL *</label>
+                    {{ form.file_url(class="form-input", placeholder="Enter direct URL to the book file") }}
+                    {% if form.file_url.errors %}
+                    <span class="form-error">{{ form.file_url.errors[0] }}</span>
+                    {% endif %}
+                    <span class="form-hint">Direct URL to the book file (PDF, EPUB, etc.)</span>
                 </div>
                 
-                <!-- Tags -->
-                <div class="space-y-2">
-                    <label for="tags" class="block text-white text-sm font-medium">Tags</label>
-                    <input type="text" id="tags" name="tags" value="{{ book.tags }}"
-                           class="w-full py-3 px-4 bg-white/10 border border-white/20 focus:border-indigo-500/50 rounded-lg shadow-inner text-white placeholder-white/50 focus:ring-2 focus:ring-indigo-500/30 focus:outline-none"
-                           placeholder="physics, mechanics, class 11">
-                    <p class="text-xs text-indigo-300">Comma-separated list of tags</p>
-                </div>
-                
-                <!-- Preview -->
-                <div class="border border-white/10 rounded-lg p-6 bg-gradient-to-r from-indigo-900/30 to-purple-900/30">
-                    <h3 class="text-lg font-bold text-white mb-4">Book Preview</h3>
-                    <div class="flex flex-col md:flex-row items-start space-y-4 md:space-y-0 md:space-x-6">
-                        <div class="w-32 h-44 rounded-lg overflow-hidden border border-white/20 shadow-glow-sm bg-black/50 flex items-center justify-center">
-                            {% if book.cover_image %}
-                            <img id="cover-preview" src="{{ book.cover_image }}" alt="{{ book.title }}" class="w-full h-full object-cover">
-                            {% else %}
-                            <div id="cover-placeholder" class="flex flex-col items-center justify-center w-full h-full p-4">
-                                <i class="fas fa-book text-4xl text-indigo-400 mb-2"></i>
-                                <p class="text-xs text-center text-indigo-300">No cover image</p>
-                            </div>
-                            {% endif %}
-                        </div>
-                        
-                        <div class="flex-1">
-                            <div id="title-preview" class="text-xl font-bold text-white mb-1">{{ book.title }}</div>
-                            <div id="author-preview" class="text-indigo-300 mb-3">{{ book.author }}</div>
-                            <div class="flex flex-wrap gap-2 mb-3">
-                                <span id="category-preview" class="px-3 py-1 text-xs rounded-full bg-gradient-to-r from-indigo-500/30 to-purple-500/30 text-white border border-white/10">
-                                    {{ book.category }}
-                                </span>
-                                <span id="subject-preview" class="px-3 py-1 text-xs rounded-full bg-black/30 border border-indigo-500/30 text-white">
-                                    {{ book.subject }}
-                                </span>
-                                <span id="format-preview" class="px-3 py-1 text-xs rounded-full bg-black/30 border border-indigo-500/30 text-white">
-                                    {{ book.file_format }}
-                                </span>
-                            </div>
-                            <div id="tags-preview" class="flex flex-wrap gap-1.5">
-                                {% for tag in book.tags.split(',') if book.tags %}
-                                <span class="px-2 py-0.5 text-xs rounded-full bg-white/10 text-indigo-300">{{ tag.strip() }}</span>
-                                {% endfor %}
-                            </div>
-                        </div>
+                <div class="form-2-columns">
+                    <div class="form-group">
+                        <label for="file_size" class="form-label">File Size</label>
+                        {{ form.file_size(class="form-input", placeholder="e.g. 2.3 MB") }}
+                        {% if form.file_size.errors %}
+                        <span class="form-error">{{ form.file_size.errors[0] }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="file_format" class="form-label">File Format</label>
+                        {{ form.file_format(class="form-input") }}
+                        {% if form.file_format.errors %}
+                        <span class="form-error">{{ form.file_format.errors[0] }}</span>
+                        {% endif %}
                     </div>
                 </div>
+            </div>
+            
+            <!-- Additional Info Section -->
+            <div class="bg-black/10 backdrop-blur-sm p-5 rounded-lg border border-white/5 mb-6">
+                <h3 class="text-lg font-semibold text-indigo-300 mb-4">Additional Information</h3>
                 
-                <!-- Action Buttons -->
-                <div class="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-4 pt-4 border-t border-white/10">
-                    <button type="submit" 
-                            class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-medium rounded-lg shadow-glow-indigo transition duration-300">
-                        <i class="fas fa-save mr-2"></i> 
-                        Save Changes
+                <div class="form-group">
+                    <label for="cover_image" class="form-label">Cover Image URL</label>
+                    {{ form.cover_image(class="form-input", placeholder="Enter URL to cover image") }}
+                    {% if form.cover_image.errors %}
+                    <span class="form-error">{{ form.cover_image.errors[0] }}</span>
+                    {% endif %}
+                    <span class="form-hint">URL to the book cover image (leave empty to use the default cover)</span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tags" class="form-label">Tags</label>
+                    {{ form.tags(class="form-input", placeholder="Enter comma-separated tags") }}
+                    {% if form.tags.errors %}
+                    <span class="form-error">{{ form.tags.errors[0] }}</span>
+                    {% endif %}
+                    <span class="form-hint">Comma-separated list of tags (e.g., "physics, mechanics, class 11")</span>
+                </div>
+            </div>
+            
+            <!-- Form Actions -->
+            <div class="flex justify-between items-center">
+                <a href="{{ url_for('admin_book_management') }}" class="neon-btn py-2.5 px-4 bg-black/20 text-white rounded-lg border border-white/10 flex items-center">
+                    <i class="fas fa-times mr-2"></i> Cancel
+                </a>
+                
+                <div class="flex space-x-3">
+                    <button type="reset" class="neon-btn py-2.5 px-4 bg-gray-600/30 text-white rounded-lg border border-gray-500/50 flex items-center">
+                        <i class="fas fa-undo mr-2"></i> Reset
                     </button>
                     
-                    <a href="{{ url_for('admin_book_management') }}" 
-                       class="px-6 py-3 bg-black/50 hover:bg-black/70 text-white font-medium rounded-lg border border-white/10 transition duration-300">
-                        Cancel
-                    </a>
-                    
-                    <a href="{{ url_for('book_detail', book_id=book.id) }}" 
-                       class="px-6 py-3 bg-black/50 hover:bg-black/70 text-white font-medium rounded-lg border border-white/10 transition duration-300">
-                        <i class="fas fa-eye mr-2"></i>
-                        View Book
-                    </a>
+                    <button type="submit" class="neon-btn py-2.5 px-6 bg-gradient-to-r from-indigo-600/30 to-purple-600/30 text-white rounded-lg border border-indigo-500/50 shadow-glow-indigo flex items-center">
+                        <i class="fas fa-save mr-2"></i> {{ 'Update' if book else 'Save' }} Book
+                    </button>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
 
-<!-- Add neon glow styles -->
-<style>
-    /* Neon glow effects */
-    .shadow-glow-indigo {
-        box-shadow: 0 0 15px 2px rgba(79, 70, 229, 0.4);
-    }
-    
-    .shadow-glow-purple {
-        box-shadow: 0 0 15px 2px rgba(168, 85, 247, 0.4);
-    }
-    
-    .shadow-glow-sm {
-        box-shadow: 0 0 8px 1px rgba(79, 70, 229, 0.3);
-    }
-    
-    .text-shadow-glow {
-        text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-    }
-    
-    /* Add glass morphism effects */
-    .backdrop-blur-lg {
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-    }
-    
-    /* Background effects */
-    .bg-black\/30 {
-        background-color: rgba(0, 0, 0, 0.3);
-    }
-    
-    /* Make the body dark to show neon effects better */
-    body {
-        background-color: #0f172a;
-        background-image: 
-            radial-gradient(circle at 25% 25%, rgba(79, 70, 229, 0.15) 0%, transparent 50%),
-            radial-gradient(circle at 75% 75%, rgba(168, 85, 247, 0.15) 0%, transparent 50%);
-    }
-</style>
-
+<!-- Preview Section -->
+{% if book and book.cover_image %}
+<div class="mt-8">
+    <h3 class="text-xl font-bold mb-4 text-white">Book Preview</h3>
+    <div class="glass-card p-6">
+        <div class="flex flex-col md:flex-row md:items-start">
+            <div class="w-full md:w-1/4 mb-6 md:mb-0 md:pr-6">
+                <div class="relative">
+                    <img src="{{ book.cover_image }}" alt="{{ book.title }}" class="w-full rounded-lg shadow-glow-indigo object-cover">
+                    <div class="absolute inset-0 rounded-lg border border-indigo-500/30"></div>
+                </div>
+            </div>
+            
+            <div class="w-full md:w-3/4">
+                <h2 class="text-2xl font-bold mb-2 text-white">{{ book.title }}</h2>
+                <p class="text-lg text-white/70 mb-4">{{ book.author }}</p>
+                
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <p class="text-sm text-indigo-300">Category</p>
+                        <p class="text-white">
+                            {% for category in config['CATEGORIES'] %}
+                                {% if category.id == book.category %}
+                                    {{ category.name }}
+                                {% endif %}
+                            {% endfor %}
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <p class="text-sm text-indigo-300">Subject</p>
+                        <p class="text-white">{{ book.subject }}</p>
+                    </div>
+                    
+                    <div>
+                        <p class="text-sm text-indigo-300">File Format</p>
+                        <p class="text-white">{{ book.file_format }}</p>
+                    </div>
+                    
+                    <div>
+                        <p class="text-sm text-indigo-300">File Size</p>
+                        <p class="text-white">{{ book.file_size }}</p>
+                    </div>
+                </div>
+                
+                <div class="flex flex-wrap gap-2 mb-4">
+                    {% if book.tags %}
+                        {% for tag in book.tags.split(',') %}
+                        <span class="inline-block px-3 py-1 bg-indigo-900/30 text-white text-xs rounded-full border border-indigo-500/30">
+                            {{ tag.strip() }}
+                        </span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                
+                <div class="flex items-center text-white/70 text-sm">
+                    <span class="flex items-center mr-4">
+                        <i class="fas fa-download mr-1.5"></i> {{ book.downloads }} downloads
+                    </span>
+                    <span class="flex items-center">
+                        <i class="fas fa-clock mr-1.5"></i> Added {{ book.created_at.strftime('%b %d, %Y') }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 {% endblock %}
 
 {% block scripts %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Live preview functionality
-        const titleInput = document.getElementById('title');
-        const authorInput = document.getElementById('author');
-        const categorySelect = document.getElementById('category');
-        const subjectSelect = document.getElementById('subject');
-        const formatSelect = document.getElementById('file_format');
-        const tagsInput = document.getElementById('tags');
-        const coverInput = document.getElementById('cover_image');
+        // Optional preview image display
+        const coverImageInput = document.getElementById('cover_image');
         
-        const titlePreview = document.getElementById('title-preview');
-        const authorPreview = document.getElementById('author-preview');
-        const categoryPreview = document.getElementById('category-preview');
-        const subjectPreview = document.getElementById('subject-preview');
-        const formatPreview = document.getElementById('format-preview');
-        const tagsPreview = document.getElementById('tags-preview');
-        const coverPreview = document.getElementById('cover-preview');
-        const coverPlaceholder = document.getElementById('cover-placeholder');
+        if (coverImageInput) {
+            coverImageInput.addEventListener('blur', function() {
+                // Could be expanded to show a real-time preview if needed
+                console.log('Cover image URL:', this.value);
+            });
+        }
         
-        // Update title
-        titleInput.addEventListener('input', function() {
-            titlePreview.textContent = this.value;
-        });
+        // Form validation enhancement
+        const form = document.querySelector('form');
+        const requiredInputs = document.querySelectorAll('input[required]');
         
-        // Update author
-        authorInput.addEventListener('input', function() {
-            authorPreview.textContent = this.value;
-        });
-        
-        // Update category
-        categorySelect.addEventListener('change', function() {
-            categoryPreview.textContent = this.options[this.selectedIndex].text;
-        });
-        
-        // Update subject
-        subjectSelect.addEventListener('change', function() {
-            subjectPreview.textContent = this.options[this.selectedIndex].text;
-        });
-        
-        // Update format
-        formatSelect.addEventListener('change', function() {
-            formatPreview.textContent = this.value;
-        });
-        
-        // Update tags
-        tagsInput.addEventListener('input', function() {
-            // Clear current tags
-            tagsPreview.innerHTML = '';
+        form.addEventListener('submit', function(e) {
+            let hasErrors = false;
             
-            // Add new tags
-            const tags = this.value.split(',');
-            tags.forEach(tag => {
-                if (tag.trim()) {
-                    const tagSpan = document.createElement('span');
-                    tagSpan.className = 'px-2 py-0.5 text-xs rounded-full bg-white/10 text-indigo-300';
-                    tagSpan.textContent = tag.trim();
-                    tagsPreview.appendChild(tagSpan);
+            requiredInputs.forEach(input => {
+                if (!input.value.trim()) {
+                    const formGroup = input.closest('.form-group');
+                    let errorSpan = formGroup.querySelector('.form-error');
+                    
+                    if (!errorSpan) {
+                        errorSpan = document.createElement('span');
+                        errorSpan.className = 'form-error';
+                        formGroup.appendChild(errorSpan);
+                    }
+                    
+                    errorSpan.textContent = 'This field is required';
+                    input.classList.add('border-red-500');
+                    hasErrors = true;
                 }
             });
+            
+            if (hasErrors) {
+                e.preventDefault();
+            }
         });
         
-        // Update cover image
-        coverInput.addEventListener('input', function() {
-            if (this.value) {
-                // Create or show the image element
-                if (!coverPreview) {
-                    const img = document.createElement('img');
-                    img.id = 'cover-preview';
-                    img.className = 'w-full h-full object-cover';
-                    img.alt = titleInput.value;
-                    
-                    if (coverPlaceholder) {
-                        coverPlaceholder.parentNode.replaceChild(img, coverPlaceholder);
-                    }
-                    coverPreview = img;
-                } else {
-                    coverPreview.style.display = 'block';
-                    if (coverPlaceholder) coverPlaceholder.style.display = 'none';
+        // Clear validation errors on input
+        requiredInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                const formGroup = this.closest('.form-group');
+                const errorSpan = formGroup.querySelector('.form-error');
+                
+                if (errorSpan) {
+                    errorSpan.textContent = '';
                 }
                 
-                coverPreview.src = this.value;
-            } else {
-                // Show placeholder if no image
-                if (coverPreview) coverPreview.style.display = 'none';
-                if (coverPlaceholder) coverPlaceholder.style.display = 'flex';
-            }
+                this.classList.remove('border-red-500');
+            });
         });
     });
 </script>

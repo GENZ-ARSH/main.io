@@ -409,7 +409,8 @@ def edit_book(book_id):
     
     # Set up dynamic choices for category and subject
     form.category.choices = [(c['id'], c['name']) for c in app.config['CATEGORIES']]
-    form.subject.choices = [('', '-- Select Subject --')] + [(s, s) for s in app.config['SUBJECTS']]
+    form.subject.choices = [(s, s) for s in app.config['SUBJECTS']]
+    form.subject.choices.insert(0, ('', '-- Select Subject --'))
     
     if form.validate_on_submit():
         form.populate_obj(book)
