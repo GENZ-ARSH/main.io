@@ -63,3 +63,22 @@ class AdminRequest(db.Model):
     
     def __repr__(self):
         return f'<AdminRequest {self.email}>'
+class SearchAnalytics(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    search_term = db.Column(db.String(200), nullable=False)
+    category = db.Column(db.String(50))
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    
+    def __repr__(self):
+        return f'<SearchAnalytics {self.search_term}>'
+class BookRating(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    rating = db.Column(db.Integer, nullable=False)  # 1-5 stars
+    review = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def __repr__(self):
+        return f'<BookRating {self.book_id}:{self.rating}>'

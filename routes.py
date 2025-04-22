@@ -119,6 +119,16 @@ def books(category):
     search = request.args.get('search', '')
     tag = request.args.get('tag', '')
     
+    # Track search analytics
+    if search:
+        analytics = SearchAnalytics(
+            search_term=search,
+            category=category,
+            user_id=session.get('user_id')
+        )
+        db.session.add(analytics)
+        db.session.commit()
+    
     books_list = get_all_books(category, search, tag)
     category_info = next((c for c in app.config['CATEGORIES'] if c['id'] == category), None)
     
@@ -525,3 +535,44 @@ def edit_book(book_id):
                           book=book,
                           categories=app.config['CATEGORIES'],
                           subjects=app.config['SUBJECTS'])
+@app.route('/book/<int:book_id>/rate', methods=['POST'])
+@login_required
+def rate_book(book_id):
+    rating_value = request.form.get('rating', type=int)
+    review = request.form.get('review')
+    
+    if not rating_value or rating_value not in range(1, 6):
+        flash('Please provide a valid rating (1-5 stars)', 'error')
+        return redirect(url_for('book_detail', book_id=book_id))
+    
+    existing_rating = BookRating.query.filter_by(
+        book_id=book_id,
+        user_id=session['user_id']
+    ).first()
+    
+    if existing_rating:
+        existing_rating.rating = rating_value
+        existing_rating.review = review
+    else:
+        new_rating = BookRating(
+            book_id=book_id,
+            user_id=session['user_id'],
+            rating=rating_value,
+            review=review
+        )
+        db.session.add(new_rating)
+    
+    db.session.commit()
+    flash('Thank you for your review!', 'success')
+    return redirect(url_for('book_detail', book_id=book_id))
+
+# Update book_detail route to include ratings
+@app.route('/book/<int:book_id>')
+def book_detail(book_id):
+    book = Book.query.get_or_404(book_id)
+    related_books = Book.query.filter_by(category=book.category).filter(Book.id != book.id).limit(4).all()
+    book_ratings = BookRating.query.filter_by(book_id=book_id).order_by(BookRating.created_at.desc()).all()
+    return render_template('book_detail.html', 
+                         book=book, 
+                         related_books=related_books,
+                         book_ratings=book_ratings)
