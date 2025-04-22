@@ -388,15 +388,15 @@ def secure_admin_login():
     form = SecureAdminLoginForm()
     
     if form.validate_on_submit():
-        # Check if the admin password matches
-        admin_password = os.environ.get('ADMIN_PASSWORD', 'genz-admin-123')  # Default for development
+        # Check if the admin password matches the GENZCLANX code
+        admin_password = 'GENZCLANX'  # Special code for GENZ admins
         
         if form.password.data == admin_password:
             session['secure_admin'] = True
-            flash('Secure admin access granted', 'success')
+            flash('⚡ GENZ Power Unlocked! Secure admin access granted', 'success')
             return redirect(url_for('admin_book_management'))
         else:
-            flash('Invalid admin password', 'error')
+            flash('⛔ Access denied. Invalid GENZ code.', 'error')
     
     return render_template('admin_login.html', form=form)
 

@@ -1,4 +1,16 @@
-/* Neon Glass Design System for GEN-Z LIBRARY */
+/* GENZ-CLANX Futuristic Cyberpunk Design System */
+
+/* Core Color Variables */
+:root {
+    --neon-cyan: #0ff;
+    --neon-pink: #f0f;
+    --neon-purple: #c0f;
+    --neon-blue: #0cf;
+    --neon-yellow: #ff0;
+    --neon-green: #0f8;
+    --dark-bg: #0a0a10;
+    --darker-bg: #050507;
+}
 
 /* Core Neon Glow Effects */
 .shadow-glow-indigo {
@@ -200,4 +212,196 @@
     background-image: 
         radial-gradient(circle at 25% 25%, rgba(79, 70, 229, 0.15) 0%, transparent 50%),
         radial-gradient(circle at 75% 75%, rgba(168, 85, 247, 0.15) 0%, transparent 50%);
+}
+
+/* Futuristic Cyberpunk Elements */
+
+/* Scanlines effect for background */
+.cyberpunk-scanlines {
+    position: relative;
+    overflow: hidden;
+}
+
+.cyberpunk-scanlines::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.05) 0.5%,
+        transparent 1%
+    );
+    pointer-events: none;
+    z-index: 100;
+    animation: scanlines 8s linear infinite;
+}
+
+@keyframes scanlines {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100%; }
+}
+
+/* Cyber Button */
+.cyber-button {
+    position: relative;
+    background: var(--darker-bg);
+    color: var(--neon-cyan);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid var(--neon-cyan);
+    clip-path: polygon(
+        0% 0%, 
+        92% 0, 
+        100% 30%, 
+        100% 100%, 
+        8% 100%, 
+        0% 70%
+    );
+    transition: all 0.2s ease;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.cyber-button:hover {
+    background: rgba(0, 255, 255, 0.1);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+    transform: translateY(-2px);
+}
+
+.cyber-button::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 10px;
+    height: 10px;
+    background: var(--neon-pink);
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+/* Glitch Text Effect */
+.glitch-text {
+    position: relative;
+    font-weight: bold;
+    color: white;
+    letter-spacing: 3px;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch-text::before {
+    color: var(--neon-cyan);
+    z-index: -2;
+    animation: glitch-animation 0.4s ease-in-out infinite;
+}
+
+.glitch-text::after {
+    color: var(--neon-pink);
+    z-index: -1;
+    animation: glitch-animation 0.3s ease-in-out infinite reverse;
+}
+
+@keyframes glitch-animation {
+    0% {
+        transform: translate(0);
+    }
+    20% {
+        transform: translate(-2px, 2px);
+    }
+    40% {
+        transform: translate(-2px, -2px);
+    }
+    60% {
+        transform: translate(2px, 2px);
+    }
+    80% {
+        transform: translate(2px, -2px);
+    }
+    100% {
+        transform: translate(0);
+    }
+}
+
+/* Tech Lines Background */
+.tech-grid-bg {
+    background-color: var(--darker-bg);
+    background-image: 
+        linear-gradient(var(--neon-cyan) 1px, transparent 1px),
+        linear-gradient(90deg, var(--neon-cyan) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: center center;
+    opacity: 0.05;
+}
+
+/* Terminal Text */
+.terminal-text {
+    font-family: 'Courier New', monospace;
+    color: var(--neon-green);
+    background: black;
+    padding: 0.5rem;
+    border-left: 3px solid var(--neon-green);
+}
+
+/* Cyberpunk Card */
+.cyberpunk-card {
+    background: var(--darker-bg);
+    color: white;
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        100% calc(100% - 15px),
+        calc(100% - 15px) 100%,
+        0 100%
+    );
+    border-top: 2px solid var(--neon-cyan);
+    box-shadow: 
+        0 0 20px rgba(0, 255, 255, 0.3),
+        0 0 40px rgba(0, 255, 255, 0.1) inset;
+    transition: all 0.3s ease;
+}
+
+.cyberpunk-card:hover {
+    border-top-color: var(--neon-pink);
+    box-shadow: 
+        0 0 30px rgba(255, 0, 255, 0.4),
+        0 0 60px rgba(255, 0, 255, 0.1) inset;
+    transform: translateY(-5px);
+}
+
+/* Pulsating Element */
+.cyber-pulse {
+    animation: cyber-pulse 2s infinite alternate ease-in-out;
+}
+
+@keyframes cyber-pulse {
+    0% { opacity: 0.7; transform: scale(0.98); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* Animated Border */
+.cyber-border {
+    position: relative;
+    border: 1px solid transparent;
+    background: linear-gradient(var(--darker-bg), var(--darker-bg)) padding-box,
+                linear-gradient(90deg, var(--neon-cyan), var(--neon-pink), var(--neon-purple), var(--neon-cyan)) border-box;
+    background-size: 300% 100%;
+    animation: movingBorder 8s linear infinite;
+}
+
+@keyframes movingBorder {
+    0% { background-position: 0% 0; }
+    100% { background-position: 300% 0; }
 }

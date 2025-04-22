@@ -3,21 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Secure Admin - GEN-Z LIBRARY{% endblock %}</title>
+    <title>{% block title %}GENZCLANX Secure Admin - GEN-Z LIBRARY{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/neon-glass.css') }}" rel="stylesheet">
     <style>
         body {
-            background-color: #0f172a;
+            background-color: var(--darker-bg);
             background-image: 
-                radial-gradient(circle at 25% 25%, rgba(79, 70, 229, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, rgba(168, 85, 247, 0.15) 0%, transparent 50%);
+                radial-gradient(circle at 25% 25%, rgba(0, 255, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(255, 0, 255, 0.08) 0%, transparent 50%),
+                linear-gradient(rgba(0, 255, 255, 0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.01) 1px, transparent 1px);
+            background-size: auto, auto, 20px 20px, 20px 20px;
             min-height: 100vh;
             color: white;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                transparent 0px,
+                rgba(0, 0, 0, 0.05) 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.3;
         }
         
-        /* Glowing border animation */
+        /* Futuristic border glow */
         .glow-border {
             position: relative;
         }
@@ -26,7 +48,7 @@
             content: '';
             position: absolute;
             inset: -1px;
-            background: linear-gradient(90deg, #4f46e5, #a855f7, #06b6d4, #4f46e5);
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink), var(--neon-purple), var(--neon-cyan));
             border-radius: inherit;
             z-index: -1;
             animation: animateBorder 4s linear infinite;
@@ -39,42 +61,103 @@
             100% { background-position: 0% 50%; }
         }
         
-        /* Custom scrollbar */
+        /* Custom cyberpunk scrollbar */
         ::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
         }
         
         ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 1px solid var(--neon-cyan);
         }
         
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, #4f46e5, #a855f7);
-            border-radius: 5px;
+            background: linear-gradient(to bottom, var(--neon-cyan), var(--neon-pink));
+            border-radius: 0;
         }
         
         ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(to bottom, #4338ca, #9333ea);
+            background: linear-gradient(to bottom, var(--neon-pink), var(--neon-purple));
+        }
+
+        /* Cyberpunk tech elements */
+        .tech-circle {
+            position: fixed;
+            border-radius: 50%;
+            border: 1px dashed var(--neon-cyan);
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .tech-circle-1 {
+            width: 400px;
+            height: 400px;
+            top: -100px;
+            right: -100px;
+            border-width: 2px;
+            animation: rotate 120s linear infinite;
+        }
+
+        .tech-circle-2 {
+            width: 300px;
+            height: 300px;
+            bottom: -50px;
+            left: -50px;
+            border-color: var(--neon-pink);
+            animation: rotate 90s linear infinite reverse;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Cyberpunk loading bar */
+        .cyber-loader {
+            height: 3px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                var(--neon-cyan) 50%, 
+                var(--neon-pink) 100%);
+            animation: loading 3s infinite linear;
+            background-size: 200% 100%;
+            z-index: 1001;
+        }
+
+        @keyframes loading {
+            0% { background-position: 100% 0; }
+            100% { background-position: -100% 0; }
         }
     </style>
     {% block additional_styles %}{% endblock %}
 </head>
-<body>
-    <!-- Secure Admin Navbar -->
-    <nav class="sticky top-0 z-50 backdrop-blur-lg bg-black/30 border-b border-white/10 shadow-glow-indigo">
+<body class="cyberpunk-scanlines">
+    <!-- Cyberpunk UI elements -->
+    <div class="tech-circle tech-circle-1"></div>
+    <div class="tech-circle tech-circle-2"></div>
+    <div class="cyber-loader"></div>
+    
+    <!-- Futuristic Cyberpunk Navbar -->
+    <nav class="sticky top-0 z-50 backdrop-blur-lg bg-black/40 border-b border-neon-cyan/30 shadow-glow-cyan cyberpunk-scanlines">
         <div class="container mx-auto px-4 py-3">
             <div class="flex justify-between items-center">
                 <!-- Logo and Title -->
                 <div class="flex items-center space-x-3">
                     <a href="{{ url_for('admin_book_management') }}" class="flex items-center">
-                        <div class="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center shadow-glow-indigo">
-                            <i class="fas fa-shield-alt text-white text-lg"></i>
+                        <div class="h-12 w-12 relative">
+                            <div class="h-10 w-10 absolute inset-0 m-auto bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center cyber-pulse" style="clip-path: polygon(0 0, 100% 0, 100% 70%, 70% 100%, 0 100%);">
+                                <i class="fas fa-shield-alt text-white text-lg"></i>
+                            </div>
+                            <div class="absolute inset-0 border-2 border-neon-cyan opacity-50" style="clip-path: polygon(0 0, 100% 0, 100% 70%, 70% 100%, 0 100%);"></div>
                         </div>
                         <div class="ml-3">
-                            <h1 class="font-bold text-xl neon-text-indigo">SECURE ADMIN</h1>
-                            <div class="text-xs text-indigo-300">GEN-Z LIBRARY</div>
+                            <div class="glitch-text font-bold text-xl" data-text="GENZCLANX">GENZCLANX</div>
+                            <div class="text-xs text-neon-cyan font-mono tracking-widest">ADMIN_CONSOLE v2.5</div>
                         </div>
                     </a>
                 </div>

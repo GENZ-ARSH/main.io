@@ -1,84 +1,496 @@
 {% extends 'secure_admin_base.html' %}
 
-{% block title %}Admin Access - GEN-Z LIBRARY{% endblock %}
+{% block title %}GENZCLANX Secure Access - GEN-Z LIBRARY{% endblock %}
 
 {% block content %}
-<div class="container mx-auto flex items-center justify-center min-h-[80vh]">
-    <div class="w-full max-w-md">
-        <!-- Neon Glass Design for Admin Login -->
-        <div class="backdrop-blur-lg bg-white/10 border border-opacity-20 border-white dark:border-white/10 shadow-lg rounded-xl overflow-hidden">
-            <!-- Header with glow effect -->
-            <div class="relative p-8 bg-gradient-to-r from-indigo-600/90 to-purple-600/90 text-white">
-                <div class="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-50 blur-xl"></div>
-                <div class="relative z-10">
-                    <h1 class="text-3xl font-bold mb-2 text-shadow-glow">Admin Access</h1>
-                    <p class="opacity-90">Enter your credentials to access admin features</p>
-                </div>
-            </div>
-            
-            <div class="p-8 bg-black/30 backdrop-blur-md">
-                <form method="POST" action="{{ url_for('secure_admin_login') }}" class="space-y-6">
-                    {{ form.hidden_tag() }}
-                    
-                    <div class="space-y-2">
-                        <label for="password" class="block text-white text-sm font-medium">Admin Password</label>
-                        <div class="relative">
-                            <input type="password" id="password" name="password" required
-                                class="w-full py-3 px-4 bg-white/10 border border-white/20 focus:border-indigo-500/50 rounded-lg shadow-inner text-white placeholder-white/50 focus:ring-2 focus:ring-indigo-500/30 focus:outline-none"
-                                placeholder="Enter admin password">
-                            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                                <i class="fas fa-lock text-white/50"></i>
+<div class="cyberpunk-container">
+    <!-- Cyberpunk decoration elements -->
+    <div class="tech-circles">
+        <div class="tech-circle one"></div>
+        <div class="tech-circle two"></div>
+        <div class="tech-circle three"></div>
+    </div>
+    
+    <div class="container mx-auto flex items-center justify-center min-h-[80vh] relative z-10">
+        <div class="w-full max-w-md">
+            <!-- Ultra-Futuristic Neon Glass Design -->
+            <div class="neon-glass-card">
+                <!-- Header with advanced glow effect -->
+                <div class="card-header relative overflow-hidden">
+                    <div class="absolute inset-0 bg-grid"></div>
+                    <div class="relative z-10 p-8 text-white">
+                        <div class="header-content">
+                            <div class="flex items-center mb-2">
+                                <div class="tech-badge">GENZ</div>
+                                <div class="ml-2 scanline-text">Secure System</div>
                             </div>
+                            <h1 class="cyberpunk-title mb-1">GEN-Z CLANX</h1>
+                            <h2 class="text-xl font-bold mb-3 text-shadow-neon">Admin Authentication</h2>
+                            <p class="cyber-subtitle">Enter GENZ access code to unlock the admin control panel</p>
                         </div>
-                        <p class="text-xs text-indigo-300 mt-1">Access to advanced book management features</p>
                     </div>
-                    
-                    <div>
-                        <button type="submit" 
-                            class="w-full relative overflow-hidden py-3 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-medium rounded-lg transition duration-300 shadow-glow-indigo">
-                            <span class="relative z-10 flex items-center justify-center">
-                                <i class="fas fa-shield-alt mr-2"></i> 
-                                Authenticate
-                            </span>
-                            <span class="absolute inset-0 bg-gradient-to-r from-indigo-600/80 to-purple-600/80 blur opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                        </button>
-                    </div>
-                </form>
+                    <div class="glow-line"></div>
+                </div>
                 
-                <div class="mt-6 pt-6 border-t border-white/10 text-center">
-                    <p class="text-white/70 text-sm">
-                        <i class="fas fa-info-circle mr-2"></i> 
-                        Only authorized administrators can access this area
-                    </p>
+                <div class="p-8 bg-black/40 backdrop-blur-xl relative">
+                    <div class="tech-lines left"></div>
+                    <div class="tech-lines right"></div>
+                    
+                    <form method="POST" action="{{ url_for('secure_admin_login') }}" class="space-y-6 relative z-10">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="space-y-3">
+                            <label for="password" class="block text-white text-sm font-medium flex items-center">
+                                <i class="fas fa-key text-neon-cyan mr-2"></i>
+                                <span class="cyber-text">GENZCLANX AUTHENTICATION CODE</span>
+                            </label>
+                            <div class="relative">
+                                <input type="password" id="password" name="password" required
+                                    class="cyberpunk-input w-full py-3 px-4 bg-black/50 border-l-2 border-t-2 border-r-0 border-b-0 border-neon-cyan focus:border-neon-pink rounded-md shadow-inner text-white placeholder-white/50 focus:ring-2 focus:ring-neon-pink/30 focus:outline-none"
+                                    placeholder="Enter GENZCLANX code"
+                                    autocomplete="off">
+                                <div class="input-glow"></div>
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                    <i class="fas fa-shield-alt text-neon-cyan pulsate"></i>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-1 mt-2">
+                                <div class="h-1 w-1 rounded-full bg-neon-pink pulsate-fast"></div>
+                                <div class="h-1 w-1 rounded-full bg-neon-cyan pulsate-fast delay-100"></div>
+                                <div class="h-1 w-1 rounded-full bg-neon-purple pulsate-fast delay-200"></div>
+                            </div>
+                            <p class="text-xs text-neon-cyan mt-1 cyber-small-text">
+                                SECURE CONNECTION ESTABLISHED • ACCESS REQUIRES CODE
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <button type="submit" class="cyberpunk-button">
+                                <span class="button-glitch"></span>
+                                <span class="relative z-10 flex items-center justify-center">
+                                    <i class="fas fa-bolt mr-2"></i> 
+                                    ACTIVATE ADMIN CONSOLE
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="mt-6 pt-6 border-t border-neon-cyan/20 text-center relative">
+                        <div class="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-neon-cyan to-transparent top-0 glow-line-sm"></div>
+                        <p class="text-white/70 text-sm cyber-small-text">
+                            <i class="fas fa-database text-neon-pink mr-2"></i> 
+                            GENZ SECURE NETWORK • AUTH v2.5 • ADMIN ACCESS ONLY
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Add neon glow styles -->
+<!-- Advanced cyberpunk styles -->
 <style>
-    .shadow-glow-indigo {
-        box-shadow: 0 0 15px 2px rgba(79, 70, 229, 0.4);
+    /* Base Cyberpunk Theme */
+    :root {
+        --neon-cyan: #0ff;
+        --neon-pink: #f0f;
+        --neon-purple: #c0f;
+        --neon-blue: #0cf;
+        --neon-yellow: #ff0;
     }
     
-    .text-shadow-glow {
-        text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+    .cyberpunk-container {
+        position: relative;
+        background-color: #000;
+        min-height: 100vh;
+        overflow: hidden;
+    }
+
+    .cyberpunk-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at center, rgba(79, 70, 229, 0.15) 0%, transparent 70%);
+        pointer-events: none;
     }
     
-    /* Add glass morphism and neon effects */
-    .backdrop-blur-lg {
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
+    /* Advanced Neon Card */
+    .neon-glass-card {
+        background: rgba(10, 10, 15, 0.8);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(var(--neon-cyan), 0.1);
+        border-radius: 8px;
+        box-shadow: 
+            0 0 30px rgba(0, 255, 255, 0.2),
+            0 0 10px rgba(0, 255, 255, 0.1) inset;
+        position: relative;
+        overflow: hidden;
+        animation: cardPulse 5s infinite alternate;
     }
     
-    .bg-black\/30 {
-        background-color: rgba(0, 0, 0, 0.3);
+    @keyframes cardPulse {
+        0% { box-shadow: 0 0 30px rgba(0, 255, 255, 0.2), 0 0 10px rgba(0, 255, 255, 0.1) inset; }
+        50% { box-shadow: 0 0 40px rgba(255, 0, 255, 0.3), 0 0 15px rgba(255, 0, 255, 0.1) inset; }
+        100% { box-shadow: 0 0 30px rgba(192, 0, 255, 0.2), 0 0 10px rgba(192, 0, 255, 0.1) inset; }
     }
     
-    /* Neon button effect */
-    button:hover .shadow-glow-indigo {
-        box-shadow: 0 0 25px 5px rgba(79, 70, 229, 0.6);
+    .card-header {
+        background: linear-gradient(45deg, #0d0221, #170b3b);
+        padding: 0;
+    }
+    
+    /* Cyber Typography */
+    .cyberpunk-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        background: linear-gradient(to right, var(--neon-cyan), var(--neon-pink));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 
+            0 0 10px rgba(0, 255, 255, 0.5),
+            0 0 20px rgba(0, 255, 255, 0.3);
+        position: relative;
+        z-index: 1;
+    }
+    
+    .cyber-subtitle {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+    
+    .cyber-text {
+        letter-spacing: 1px;
+        font-weight: 600;
+    }
+    
+    .cyber-small-text {
+        font-family: monospace;
+        letter-spacing: 1px;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+    }
+    
+    .scanline-text {
+        position: relative;
+        color: var(--neon-cyan);
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        overflow: hidden;
+    }
+    
+    .scanline-text::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--neon-cyan);
+        opacity: 0.8;
+        animation: scanline 3s linear infinite;
+    }
+    
+    @keyframes scanline {
+        0% { top: 0%; } 
+        100% { top: 100%; }
+    }
+    
+    /* Tech Elements */
+    .tech-badge {
+        background: linear-gradient(45deg, var(--neon-pink), var(--neon-purple));
+        color: white;
+        font-size: 0.7rem;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 3px;
+        letter-spacing: 1px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+    }
+    
+    .tech-badge::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        animation: shine 3s infinite;
+    }
+    
+    @keyframes shine {
+        0% { left: -100%; }
+        20% { left: 100%; }
+        100% { left: 100%; }
+    }
+    
+    .glow-line {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(to right, transparent, var(--neon-cyan), transparent);
+        box-shadow: 0 0 10px 1px var(--neon-cyan);
+    }
+    
+    .glow-line-sm {
+        box-shadow: 0 0 5px 0.5px var(--neon-cyan);
+    }
+    
+    .tech-circles {
+        position: absolute;
+        pointer-events: none;
+        z-index: 0;
+    }
+    
+    .tech-circle {
+        position: absolute;
+        border-radius: 50%;
+        border: 1px solid var(--neon-cyan);
+        opacity: 0.1;
+    }
+    
+    .tech-circle.one {
+        width: 300px;
+        height: 300px;
+        top: -50px;
+        right: -100px;
+        border-width: 2px;
+        animation: rotate 30s linear infinite;
+    }
+    
+    .tech-circle.two {
+        width: 200px;
+        height: 200px;
+        bottom: -70px;
+        left: -70px;
+        border-color: var(--neon-pink);
+        animation: rotate 20s linear infinite reverse;
+    }
+    
+    .tech-circle.three {
+        width: 400px;
+        height: 400px;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-color: var(--neon-purple);
+        border-width: 1px;
+        opacity: 0.05;
+        animation: pulse 15s ease-in-out infinite;
+    }
+    
+    @keyframes rotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
+        50% { opacity: 0.1; transform: translate(-50%, -50%) scale(1.1); }
+    }
+    
+    .tech-lines {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 20px;
+        pointer-events: none;
+    }
+    
+    .tech-lines.left {
+        left: 10px;
+        border-left: 1px solid var(--neon-cyan);
+        opacity: 0.1;
+    }
+    
+    .tech-lines.right {
+        right: 10px;
+        border-right: 1px solid var(--neon-pink);
+        opacity: 0.1;
+    }
+    
+    /* Input & Button Styles */
+    .cyberpunk-input {
+        transition: all 0.3s ease;
+    }
+    
+    .cyberpunk-input:focus {
+        animation: inputPulse 1.5s infinite alternate;
+    }
+    
+    @keyframes inputPulse {
+        0% { box-shadow: 0 0 5px var(--neon-cyan); }
+        100% { box-shadow: 0 0 15px var(--neon-pink); }
+    }
+    
+    .input-glow {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 2px;
+        background: linear-gradient(to right, var(--neon-cyan), var(--neon-pink));
+        animation: inputGlow 3s infinite alternate;
+        transition: all 0.3s ease;
+        opacity: 0;
+    }
+    
+    .cyberpunk-input:focus + .input-glow {
+        opacity: 1;
+        width: 100%;
+    }
+    
+    @keyframes inputGlow {
+        0% { width: 0; left: 0; }
+        50% { width: 100%; left: 0; }
+        100% { width: 0; left: 100%; }
+    }
+    
+    .cyberpunk-button {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(45deg, #0a0a10, #1a1a2e);
+        border: none;
+        color: white;
+        padding: 12px 24px;
+        font-weight: 600;
+        text-transform: uppercase;
+        border-radius: 4px;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 
+            0 0 0 1px rgba(0, 255, 255, 0.3),
+            0 0 0 2px rgba(0, 255, 255, 0.1),
+            0 6px 10px rgba(0, 0, 0, 0.2);
+        width: 100%;
+    }
+    
+    .cyberpunk-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, var(--neon-cyan), var(--neon-pink));
+        opacity: 0;
+        z-index: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .cyberpunk-button:hover {
+        box-shadow: 
+            0 0 0 1px rgba(255, 0, 255, 0.3),
+            0 0 0 2px rgba(255, 0, 255, 0.1),
+            0 0 20px rgba(255, 0, 255, 0.3);
+        transform: translateY(-2px);
+    }
+    
+    .cyberpunk-button:hover::before {
+        opacity: 0.1;
+    }
+    
+    .cyberpunk-button:active {
+        transform: translateY(1px);
+    }
+    
+    .button-glitch {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        clip-path: polygon(0 0, 100% 0, 100% 5%, 0 5%);
+        animation: glitch 2s infinite;
+        opacity: 0;
+    }
+    
+    .cyberpunk-button:hover .button-glitch {
+        opacity: 1;
+    }
+    
+    @keyframes glitch {
+        0% { clip-path: polygon(0 0, 100% 0, 100% 5%, 0 5%); }
+        10% { clip-path: polygon(0 15%, 100% 15%, 100% 25%, 0 25%); }
+        20% { clip-path: polygon(0 10%, 100% 10%, 100% 20%, 0 20%); }
+        30% { clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%); }
+        40% { clip-path: polygon(0 30%, 100% 30%, 100% 35%, 0 35%); }
+        50% { clip-path: polygon(0 65%, 100% 65%, 100% 70%, 0 70%); }
+        60% { clip-path: polygon(0 45%, 100% 45%, 100% 50%, 0 50%); }
+        70% { clip-path: polygon(0 25%, 100% 25%, 100% 30%, 0 30%); }
+        80% { clip-path: polygon(0 75%, 100% 75%, 100% 80%, 0 80%); }
+        90% { clip-path: polygon(0 85%, 100% 85%, 100% 90%, 0 90%); }
+        100% { clip-path: polygon(0 0, 100% 0, 100% 5%, 0 5%); }
+    }
+    
+    /* Special Effects */
+    .text-neon-cyan {
+        color: var(--neon-cyan);
+    }
+    
+    .text-neon-pink {
+        color: var(--neon-pink);
+    }
+    
+    .text-neon-purple {
+        color: var(--neon-purple);
+    }
+    
+    .text-shadow-neon {
+        text-shadow: 
+            0 0 5px var(--neon-cyan),
+            0 0 10px var(--neon-cyan),
+            0 0 20px var(--neon-cyan);
+    }
+    
+    .pulsate {
+        animation: pulsate 2s infinite alternate;
+    }
+    
+    .pulsate-fast {
+        animation: pulsate 1s infinite alternate;
+    }
+    
+    .delay-100 {
+        animation-delay: 0.1s;
+    }
+    
+    .delay-200 {
+        animation-delay: 0.2s;
+    }
+    
+    @keyframes pulsate {
+        0% { opacity: 0.6; text-shadow: none; }
+        100% { opacity: 1; text-shadow: 0 0 8px currentColor; }
+    }
+    
+    .bg-grid {
+        background-image:
+            linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 20px 20px;
+        background-position: center center;
+    }
+    
+    /* Additional responsive fixes */
+    @media (max-width: 640px) {
+        .cyberpunk-title {
+            font-size: 2rem;
+        }
     }
 </style>
 {% endblock %}
