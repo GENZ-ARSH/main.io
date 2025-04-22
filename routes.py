@@ -2,7 +2,7 @@ import os
 import json
 from flask import render_template, request, redirect, url_for, flash, session, jsonify, send_file, current_app
 from app import app, db
-from models import User, Book, BookRequest, AdminRequest, Announcement
+from models import User, Book, BookRequest, AdminRequest, Announcement, BookRating # Added BookRating import
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SelectField, TextAreaField, SubmitField, HiddenField, validators
@@ -51,10 +51,10 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        
+
         # Try local authentication first
         user = verify_user(email, password)
-        
+
         # If local auth fails, try PocketBase
         if not user:
             auth_data = pb_login(email, password)
@@ -64,10 +64,10 @@ def login():
                     user = create_local_user(email, password, role=auth_data.get('role', 'user'))
                 else:
                     user = User.query.filter_by(email=email).first()
-                    
+
                 # Store PocketBase token
                 session['pb_token'] = auth_data['token']
-        
+
         if user:
             session['user_id'] = user.id
             session['email'] = user.email
@@ -76,7 +76,7 @@ def login():
             return redirect(url_for('index'))
         else:
             flash('Invalid email or password', 'error')
-    
+
     return render_template('login.html')
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -85,27 +85,27 @@ def register():
         email = request.form.get('email')
         password = request.form.get('password')
         confirm = request.form.get('confirm')
-        
+
         if password != confirm:
             flash('Passwords do not match', 'error')
             return render_template('register.html')
-        
+
         if user_exists(email):
             flash('Email already registered', 'error')
             return render_template('register.html')
-        
+
         # Register in PocketBase
         pb_result = pb_register(email, password)
-        
+
         if pb_result:
             # Create local user
             user = create_local_user(email, password)
             if user:
                 flash('Registration successful! Please log in.', 'success')
                 return redirect(url_for('login'))
-        
+
         flash('Registration failed. Please try again.', 'error')
-    
+
     return render_template('register.html')
 
 @app.route('/logout')
@@ -118,7 +118,7 @@ def logout():
 def books(category):
     search = request.args.get('search', '')
     tag = request.args.get('tag', '')
-    
+
     # Track search analytics
     if search:
         analytics = SearchAnalytics(
@@ -128,10 +128,10 @@ def books(category):
         )
         db.session.add(analytics)
         db.session.commit()
-    
+
     books_list = get_all_books(category, search, tag)
     category_info = next((c for c in app.config['CATEGORIES'] if c['id'] == category), None)
-    
+
     return render_template('books.html', 
                            books=books_list, 
                            category=category_info,
@@ -143,7 +143,11 @@ def books(category):
 def book_detail(book_id):
     book = Book.query.get_or_404(book_id)
     related_books = Book.query.filter_by(category=book.category).filter(Book.id != book.id).limit(4).all()
-    return render_template('book_detail.html', book=book, related_books=related_books)
+    book_ratings = BookRating.query.filter_by(book_id=book_id).order_by(BookRating.created_at.desc()).all()
+    return render_template('book_detail.html', 
+                         book=book, 
+                         related_books=related_books,
+                         book_ratings=book_ratings)
 
 @app.route('/download/<int:book_id>')
 def download_book(book_id):
@@ -159,23 +163,23 @@ def request_book():
     if request.method == 'POST':
         book_name = request.form.get('book_name')
         author_name = request.form.get('author_name')
-        
+
         if not book_name:
             flash('Book name is required', 'error')
             return render_template('book_request.html')
-        
+
         book_request = BookRequest(
             book_name=book_name,
             author_name=author_name,
             user_email=session['email']
         )
-        
+
         db.session.add(book_request)
         db.session.commit()
-        
+
         flash('Book request submitted successfully!', 'success')
         return redirect(url_for('index'))
-    
+
     return render_template('book_request.html')
 
 @app.route('/request-admin', methods=['GET', 'POST'])
@@ -183,22 +187,22 @@ def request_book():
 def request_admin():
     if request.method == 'POST':
         reason = request.form.get('reason')
-        
+
         if not reason:
             flash('Please provide a reason for becoming an admin', 'error')
             return render_template('admin_request.html')
-        
+
         admin_request = AdminRequest(
             email=session['email'],
             reason=reason
         )
-        
+
         db.session.add(admin_request)
         db.session.commit()
-        
+
         flash('Admin request submitted successfully!', 'success')
         return redirect(url_for('index'))
-    
+
     return render_template('admin_request.html')
 
 @app.route('/admin/dashboard')
@@ -207,10 +211,10 @@ def admin_dashboard():
     books = Book.query.order_by(Book.created_at.desc()).all()
     book_requests = BookRequest.query.filter_by(status='pending').all()
     admin_requests = AdminRequest.query.filter_by(status='pending').all()
-    
+
     total_books = Book.query.count()
     total_downloads = db.session.query(db.func.sum(Book.downloads)).scalar() or 0
-    
+
     return render_template('admin_dashboard.html',
                            books=books,
                            book_requests=book_requests,
@@ -231,14 +235,14 @@ def upload_book():
         file_format = request.form.get('file_format')
         cover_image = request.form.get('cover_image')
         file_url = request.form.get('file_url')
-        
+
         # Basic validation
         if not all([title, author, category, file_url]):
             flash('Please fill all required fields', 'error')
             return render_template('book_upload.html', 
                                    categories=app.config['CATEGORIES'],
                                    subjects=app.config['SUBJECTS'])
-        
+
         # Create new book
         book = Book(
             title=title,
@@ -251,13 +255,13 @@ def upload_book():
             cover_image=cover_image,
             file_url=file_url
         )
-        
+
         db.session.add(book)
         db.session.commit()
-        
+
         flash('Book uploaded successfully!', 'success')
         return redirect(url_for('admin_dashboard'))
-    
+
     return render_template('book_upload.html', 
                            categories=app.config['CATEGORIES'],
                            subjects=app.config['SUBJECTS'])
@@ -266,17 +270,17 @@ def upload_book():
 @admin_required
 def approve_admin_request(request_id):
     admin_request = AdminRequest.query.get_or_404(request_id)
-    
+
     # Update request status
     admin_request.status = 'approved'
-    
+
     # Find the user and make them an admin
     user = User.query.filter_by(email=admin_request.email).first()
     if user:
         user.role = 'admin'
-    
+
     db.session.commit()
-    
+
     flash(f'Admin request for {admin_request.email} approved!', 'success')
     return redirect(url_for('admin_dashboard'))
 
@@ -286,7 +290,7 @@ def reject_admin_request(request_id):
     admin_request = AdminRequest.query.get_or_404(request_id)
     admin_request.status = 'rejected'
     db.session.commit()
-    
+
     flash(f'Admin request for {admin_request.email} rejected', 'success')
     return redirect(url_for('admin_dashboard'))
 
@@ -296,7 +300,7 @@ def delete_book(book_id):
     book = Book.query.get_or_404(book_id)
     db.session.delete(book)
     db.session.commit()
-    
+
     flash('Book deleted successfully', 'success')
     return redirect(url_for('admin_dashboard'))
 
@@ -319,13 +323,13 @@ def announcement_detail(announcement_id):
 @app.route('/post-announcement', methods=['GET', 'POST'])
 def post_announcement():
     form = AnnouncementForm()
-    
+
     if form.validate_on_submit():
         # Check the secret code
         if form.secret_code.data != 'GENZCLANX':
             flash('Invalid secret code. Access denied.', 'error')
             return render_template('post_announcement.html', form=form)
-        
+
         # Create a new announcement
         announcement = Announcement(
             title=form.title.data,
@@ -333,13 +337,13 @@ def post_announcement():
             image_url=form.image_url.data if form.image_url.data else None,
             created_by=session.get('email', 'Anonymous')
         )
-        
+
         db.session.add(announcement)
         db.session.commit()
-        
+
         flash('Announcement posted successfully!', 'success')
         return redirect(url_for('announcements'))
-    
+
     return render_template('post_announcement.html', form=form)
 
 @app.route('/delete-announcement/<int:announcement_id>', methods=['POST'])
@@ -348,7 +352,7 @@ def delete_announcement(announcement_id):
     announcement = Announcement.query.get_or_404(announcement_id)
     db.session.delete(announcement)
     db.session.commit()
-    
+
     flash('Announcement deleted successfully', 'success')
     return redirect(url_for('announcements'))
 
@@ -366,24 +370,24 @@ def verify_access():
     data = request.json
     section = data.get('section')
     code = data.get('code')
-    
+
     # Check if the code matches the GENZCLANX secure code
     if code != 'GENZCLANX':
         return jsonify({
             'success': False,
             'message': 'Invalid access code. Please try again.'
         }), 401
-    
+
     # Track access in session
     if 'secure_access' not in session:
         session['secure_access'] = []
-    
+
     if section not in session['secure_access']:
         session['secure_access'].append(section)
-    
+
     # Direct to admin login
     redirect_url = url_for('secure_admin_login')
-    
+
     return jsonify({
         'success': True,
         'message': 'Access granted!',
@@ -400,7 +404,7 @@ def coming_soon(feature):
         'marketplace': 'GENZ Marketplace',
         'scheduler': 'Live Class Scheduler'
     }
-    
+
     return render_template('coming_soon.html', 
                           feature=feature,
                           feature_name=feature_names.get(feature, 'This Feature'))
@@ -439,10 +443,11 @@ class AnnouncementForm(FlaskForm):
     submit = SubmitField('Post Announcement')
 
 # Secure Admin Access - Enter with password
+from datetime import datetime #Added import for datetime
 @app.route('/secure-admin', methods=['GET', 'POST'])
 def secure_admin_login():
     form = SecureAdminLoginForm()
-    
+
     if form.validate_on_submit():
         if form.password.data == 'GENZCLANX':
             session['secure_admin'] = True
@@ -451,7 +456,7 @@ def secure_admin_login():
             return redirect(url_for('admin_dashboard'))
         else:
             flash('⛔ Access denied. Invalid GENZ code.', 'error')
-    
+
     return render_template('admin_login.html', form=form)
 
 # Secure Admin Book Management
@@ -461,17 +466,17 @@ def admin_book_management():
     if not session.get('secure_admin'):
         flash('Secure admin access required', 'error')
         return redirect(url_for('secure_admin_login'))
-    
+
     # Get search, category and sort parameters
     search = request.args.get('search', '')
     category = request.args.get('category', '')
     sort = request.args.get('sort', 'title')
     page = request.args.get('page', 1, type=int)
     per_page = 20  # Books per page
-    
+
     # Start with all books
     query = Book.query
-    
+
     # Apply search filter if provided
     if search:
         query = query.filter(
@@ -479,11 +484,11 @@ def admin_book_management():
             (Book.author.ilike(f'%{search}%')) |
             (Book.tags.ilike(f'%{search}%'))
         )
-    
+
     # Apply category filter if provided
     if category:
         query = query.filter_by(category=category)
-    
+
     # Apply sorting
     if sort == 'title':
         query = query.order_by(Book.title)
@@ -493,11 +498,11 @@ def admin_book_management():
         query = query.order_by(Book.downloads.desc())
     elif sort == 'date':
         query = query.order_by(Book.created_at.desc())
-    
+
     # Paginate results
     pagination = query.paginate(page=page, per_page=per_page)
     books = pagination.items
-    
+
     return render_template('admin_book_management.html', 
                           books=books,
                           pagination=pagination,
@@ -513,21 +518,21 @@ def edit_book(book_id):
     if not session.get('secure_admin'):
         flash('Secure admin access required', 'error')
         return redirect(url_for('secure_admin_login'))
-    
+
     book = Book.query.get_or_404(book_id)
     form = BookEditForm(obj=book)
-    
+
     # Set up dynamic choices for category and subject
     form.category.choices = [(c['id'], c['name']) for c in app.config['CATEGORIES']]
     form.subject.choices = [(s, s) for s in app.config['SUBJECTS']]
     form.subject.choices.insert(0, ('', '-- Select Subject --'))
-    
+
     if form.validate_on_submit():
         form.populate_obj(book)
         db.session.commit()
         flash('Book updated successfully', 'success')
         return redirect(url_for('admin_book_management'))
-    
+
     return render_template('edit_book.html', 
                           form=form, 
                           book=book,
@@ -538,16 +543,16 @@ def edit_book(book_id):
 def rate_book(book_id):
     rating_value = request.form.get('rating', type=int)
     review = request.form.get('review')
-    
+
     if not rating_value or rating_value not in range(1, 6):
         flash('Please provide a valid rating (1-5 stars)', 'error')
         return redirect(url_for('book_detail', book_id=book_id))
-    
+
     existing_rating = BookRating.query.filter_by(
         book_id=book_id,
         user_id=session['user_id']
     ).first()
-    
+
     if existing_rating:
         existing_rating.rating = rating_value
         existing_rating.review = review
@@ -559,18 +564,18 @@ def rate_book(book_id):
             review=review
         )
         db.session.add(new_rating)
-    
+
     db.session.commit()
     flash('Thank you for your review!', 'success')
     return redirect(url_for('book_detail', book_id=book_id))
 
-# Update book_detail route to include ratings
-@app.route('/book/<int:book_id>')
-def book_detail(book_id):
-    book = Book.query.get_or_404(book_id)
-    related_books = Book.query.filter_by(category=book.category).filter(Book.id != book.id).limit(4).all()
-    book_ratings = BookRating.query.filter_by(book_id=book_id).order_by(BookRating.created_at.desc()).all()
-    return render_template('book_detail.html', 
-                         book=book, 
-                         related_books=related_books,
-                         book_ratings=book_ratings)
+#This route was already updated above and is therefore removed to avoid duplication
+#@app.route('/book/<int:book_id>')
+#def book_detail(book_id):
+#    book = Book.query.get_or_404(book_id)
+#    related_books = Book.query.filter_by(category=book.category).filter(Book.id != book.id).limit(4).all()
+#    book_ratings = BookRating.query.filter_by(book_id=book_id).order_by(BookRating.created_at.desc()).all()
+#    return render_template('book_detail.html', 
+#                         book=book, 
+#                         related_books=related_books,
+#                         book_ratings=book_ratings)
